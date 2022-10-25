@@ -48,6 +48,10 @@ impl Default for Contract {
 
 #[near_bindgen]
 impl Contract {
+    pub fn get_question_count(&self) -> u64 {
+        self.count
+    }
+
     pub fn ask(&mut self, text: String) -> u64 {
         let account_id = env::signer_account_id();
         let question = Question {
@@ -98,6 +102,19 @@ impl Contract {
             ),
             None => None,
         };
+    }
+
+    pub fn accept_answer(&mut self, question_id: u64) {
+        let account_id = env::signer_account_id();
+        if !self.questions_asked.contains_key(&account_id) {
+            panic!("Cannot accept");
+        }
+        let mut question = match self.questions.get(&question_id) {
+            Some(question) => question,
+            None => panic!("No Question Found"),
+        };
+        question.is_active = false;
+        self.questions.insert(&question_id, &question);
     }
 }
 
