@@ -1,0 +1,21 @@
+type User @entity {
+    id: ID!
+    questions: [Question!] @derivedFrom(field: "questioner")
+    answers: [Answer!] @derivedFrom(field: "answerer")
+}
+
+type Question @entity {
+    id: ID!
+    text: String!
+    questioner: User!
+    answers: [Answer!] @derivedFrom(field: "question")
+    timestamp: BigInt!
+}
+
+type Answer @entity {
+    id: ID!
+    text: String!
+    question: Question!
+    answerer: User!
+    timestamp: BigInt!
+}

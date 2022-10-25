@@ -1,0 +1,21 @@
+specVersion: 0.0.4
+description: AMA NEAR
+repository: https://github.com/gupnik/ama-near
+schema:
+    file: ./schema.graphql
+dataSources:
+    - kind: near
+      name: receipts
+      network: near-testnet
+      source:
+          account: 'dev-1666685689602-36364233853500'
+          startBlock: 103435250
+      mapping:
+          apiVersion: 0.0.6
+          language: wasm/assemblyscript
+          file: ./mapping.ts
+          entities:
+              - Questioner
+              - Question
+          receiptHandlers:
+              - handler: handleReceipt
