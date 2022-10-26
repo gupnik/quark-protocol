@@ -8,6 +8,7 @@ import { HelloNEAR } from './near-interface';
 import { Wallet } from './near-wallet';
 
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min';
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 // When creating the wallet you can optionally ask to create an access key
 // Having the key enables to call non-payable methods without interrupting the user to sign
@@ -20,12 +21,25 @@ const web3StorageClient = new Web3Storage({
     token: process.env.REACT_PUBLIC_WEB_STORAGE_TOKEN,
 });
 
+const graphClient = new ApolloClient({
+    uri: 'https://api.thegraph.com/subgraphs/name/gupnik/ama-near',
+    cache: new InMemoryCache(),
+});
+
 // Setup on page load
 window.onload = async () => {
     const isSignedIn = await wallet.startUp();
 
     ReactDOM.render(
-        <App isSignedIn={isSignedIn} helloNEAR={helloNEAR} wallet={wallet} web3StorageClient={web3StorageClient} />,
+        <ApolloProvider client={graphClient}>
+            <App
+                isSignedIn={isSignedIn}
+                helloNEAR={helloNEAR}
+                wallet={wallet}
+                web3StorageClient={web3StorageClient}
+                graphClient={graphClient}
+            />
+        </ApolloProvider>,
         document.getElementById('root')
     );
 };

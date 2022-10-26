@@ -4,8 +4,13 @@ import React from 'react';
 import './assets/global.css';
 
 import { EducationalText, SignInPrompt, SignOutButton } from './ui-components';
+import { useQuery } from '@apollo/client';
+import { questionsQuery } from './queries';
 
-export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient }) {
+export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, graphClient }) {
+    const { loading, data } = useQuery(questionsQuery);
+    console.log(loading, data);
+
     const [valueFromBlockchain, setValueFromBlockchain] = React.useState();
 
     const [lastQuestion, setLastQuestion] = React.useState();
