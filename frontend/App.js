@@ -5,7 +5,7 @@ import './assets/global.css';
 
 import { EducationalText, SignInPrompt, SignOutButton } from './ui-components';
 
-export default function App({ isSignedIn, helloNEAR, wallet }) {
+export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient }) {
     const [valueFromBlockchain, setValueFromBlockchain] = React.useState();
 
     const [lastQuestion, setLastQuestion] = React.useState();
@@ -54,19 +54,26 @@ export default function App({ isSignedIn, helloNEAR, wallet }) {
         return <SignInPrompt greeting={valueFromBlockchain} onClick={() => wallet.signIn()} />;
     }
 
-    function ask(e) {
+    async function ask(e) {
         e.preventDefault();
         setUiPleaseWait(true);
         const { questionInput } = e.target.elements;
-        helloNEAR
-            .ask(questionInput.value)
-            .then(async () => {
-                return helloNEAR.getQuestionCount();
-            })
-            .then(setValueFromBlockchain)
-            .finally(() => {
-                setUiPleaseWait(false);
-            });
+
+        const cid = await web3StorageClient.put(
+            [
+                new File([questionInput.value], 'q.json', {
+                    type: 'application/json',
+                }),
+            ],
+            {
+                name: 'q.json',
+                maxRetries: 3,
+            }
+        );
+        console.log(cid);
+        await helloNEAR.ask(cid);
+        setValueFromBlockchain(await helloNEAR.getQuestionCount());
+        setUiPleaseWait(false);
     }
 
     function answer(e) {
