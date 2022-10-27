@@ -40,18 +40,27 @@ test.afterEach.always(async (t) => {
   });
 });
 
+test('creates a course', async (t) => {
+  const { contract, alice, bob, charlie } = t.context.accounts;
+  await alice.call(contract, 'create_course', { title: 'New Course', price: 0 });
+  const courseCount: Number = await contract.view('get_course_count');
+  t.is(courseCount, 1);
+
+  await bob.call(contract, 'subscribe_course', { course_id: 1 });
+})
+
 test('asks a question', async (t) => {
   const { contract, alice, bob, charlie } = t.context.accounts;
-  await alice.call(contract, 'ask', { text: 'Hey, can you help?' });
-  const question: string = await contract.view('get_question', { question_id: 0 });
+  await alice.call(contract, 'ask', { forum_id: 1, text: 'Hey, can you help?' });
+  const question: string = await contract.view('get_question', { forum_id: 1, question_id: 1 });
   t.is(question, 'Hey, can you help?');
 
-  await bob.call(contract, 'ask', { text: 'Hey, another question?' });
-  const second_question: string = await contract.view('get_question', { question_id: 1 });
+  await bob.call(contract, 'ask', { forum_id: 1, text: 'Hey, another question?' });
+  const second_question: string = await contract.view('get_question', { forum_id: 1, question_id: 2 });
   t.is(second_question, 'Hey, another question?');
 
-  await charlie.call(contract, 'answer', { text: "Sure, will do!", question_id: 0 });
+  await charlie.call(contract, 'answer', { text: "Sure, will do!", forum_id: 1, question_id: 1 });
 
-  const answers: string[] = await contract.view('get_answers', { question_id: 0 });
+  const answers: string[] = await contract.view('get_answers', { forum_id: 1, question_id: 1 });
   t.deepEqual(answers, [ "Sure, will do!" ]);
 }); 
