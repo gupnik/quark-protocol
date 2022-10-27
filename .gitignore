@@ -36,3 +36,4 @@ dist
 neardev
 
 .env
+.next

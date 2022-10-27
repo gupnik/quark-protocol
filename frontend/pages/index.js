@@ -1,36 +1,35 @@
 import 'regenerator-runtime/runtime';
 import React from 'react';
 
-import './assets/global.css';
-
-import { EducationalText, SignInPrompt, SignOutButton } from './ui-components';
+import { EducationalText, SignInPrompt, SignOutButton } from '../components/ui-components';
 import { useQuery } from '@apollo/client';
-import { questionsQuery } from './queries';
+import { questionsQuery } from '../api/queries';
 
-export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, graphClient }) {
+export default function Home({ isSignedIn, helloNEAR, wallet, web3StorageClient, graphClient }) {
     const { loading, data } = useQuery(questionsQuery);
     console.log(loading, data);
 
-    const [valueFromBlockchain, setValueFromBlockchain] = React.useState();
+    const [valueFromBlockchain, setValueFromBlockchain] = React.useState(0);
 
-    const [lastQuestion, setLastQuestion] = React.useState();
-    const [lastQuestionAnswers, setLastQuestionAnswers] = React.useState();
+    const [lastQuestion, setLastQuestion] = React.useState('');
+    const [lastQuestionAnswers, setLastQuestionAnswers] = React.useState('');
 
     const [uiPleaseWait, setUiPleaseWait] = React.useState(true);
 
     // Get blockchian state once on component load
     React.useEffect(() => {
-        helloNEAR
-            .getQuestionCount()
-            .then(setValueFromBlockchain)
-            .catch(alert)
-            .finally(() => {
-                setUiPleaseWait(false);
-            });
-    }, []);
+        isSignedIn &&
+            helloNEAR
+                .getQuestionCount()
+                .then(setValueFromBlockchain)
+                .catch(alert)
+                .finally(() => {
+                    setUiPleaseWait(false);
+                });
+    }, [isSignedIn]);
 
     React.useEffect(() => {
-        if (valueFromBlockchain) {
+        if (isSignedIn && valueFromBlockchain > 0) {
             helloNEAR
                 .getQuestion(valueFromBlockchain - 1)
                 .then(setLastQuestion)
@@ -39,10 +38,10 @@ export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, 
                     setUiPleaseWait(false);
                 });
         }
-    }, [valueFromBlockchain]);
+    }, [isSignedIn, valueFromBlockchain]);
 
     React.useEffect(() => {
-        if (valueFromBlockchain && lastQuestion) {
+        if ((isSignedIn, valueFromBlockchain > 0 && lastQuestion)) {
             helloNEAR
                 .getAnswers(valueFromBlockchain - 1)
                 .then(setLastQuestionAnswers)
@@ -51,7 +50,7 @@ export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, 
                     setUiPleaseWait(false);
                 });
         }
-    }, [valueFromBlockchain, lastQuestion]);
+    }, [isSignedIn, valueFromBlockchain, lastQuestion]);
 
     /// If user not signed-in with wallet - show prompt
     if (!isSignedIn) {
