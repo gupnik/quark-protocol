@@ -1,7 +1,11 @@
 import 'regenerator-runtime/runtime';
 import React from 'react';
 
+import { Provider, useDispatch, useSelector } from 'react-redux';
+import store from '../redux/store';
+
 import '../styles/global.css';
+import { createEmotionSsrAdvancedApproach } from 'tss-react/next';
 
 // NEAR
 import { HelloNEAR } from '../api/near-interface';
@@ -10,7 +14,10 @@ import { Wallet } from '../api/near-wallet';
 import { Web3Storage } from 'web3.storage';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import Home from '.';
+
+const { augmentDocumentWithEmotionCache, withAppEmotionCache } = createEmotionSsrAdvancedApproach({ key: 'css' });
+
+export { augmentDocumentWithEmotionCache };
 
 // When creating the wallet you can optionally ask to create an access key
 // Having the key enables to call non-payable methods without interrupting the user to sign
@@ -28,7 +35,7 @@ const graphClient = new ApolloClient({
     cache: new InMemoryCache(),
 });
 
-export default function App() {
+function App({ Component, pageProps }) {
     const [isSignedIn, setSignedIn] = useState(false);
 
     useEffect(() => {
@@ -36,14 +43,19 @@ export default function App() {
     }, [wallet]);
 
     return (
-        <ApolloProvider client={graphClient}>
-            <Home
-                isSignedIn={isSignedIn}
-                helloNEAR={helloNEAR}
-                wallet={wallet}
-                web3StorageClient={web3StorageClient}
-                graphClient={graphClient}
-            />
-        </ApolloProvider>
+        <Provider store={store}>
+            <ApolloProvider client={graphClient}>
+                <Component
+                    {...pageProps}
+                    isSignedIn={isSignedIn}
+                    helloNEAR={helloNEAR}
+                    wallet={wallet}
+                    web3StorageClient={web3StorageClient}
+                    graphClient={graphClient}
+                />
+            </ApolloProvider>
+        </Provider>
     );
 }
+
+export default withAppEmotionCache(App);

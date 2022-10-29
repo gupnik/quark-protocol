@@ -96,9 +96,9 @@ export default function Home({ isSignedIn, helloNEAR, wallet, web3StorageClient,
     }
 
     return (
-        <>
+        <div>
             <SignOutButton accountId={wallet.accountId} onClick={() => wallet.signOut()} />
-            <main className={uiPleaseWait ? 'please-wait' : ''}>
+            <div className={uiPleaseWait ? 'please-wait' : ''}>
                 <h1>
                     Number of questions: <span className="greeting">{valueFromBlockchain}</span>
                 </h1>
@@ -128,7 +128,7 @@ export default function Home({ isSignedIn, helloNEAR, wallet, web3StorageClient,
                     </div>
                 </form>
                 <EducationalText />
-            </main>
-        </>
+            </div>
+        </div>
     );
 }

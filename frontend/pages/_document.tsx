@@ -1,7 +1,8 @@
 import React from 'react';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
+import { augmentDocumentWithEmotionCache } from "./_app";
 
-export default class MyDocument extends Document {
+class MyDocument extends Document {
   render() {
     return (
       <Html lang='en'>
@@ -25,4 +26,8 @@ export default class MyDocument extends Document {
     );
   }
 }
+
+augmentDocumentWithEmotionCache(MyDocument);
+
+export default MyDocument;
 
