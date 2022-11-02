@@ -1,0 +1,27 @@
+@import '../../../styles/base/functions.scss';
+
+.courseLesson {
+  display: flex;
+  margin-top: 2rem;
+  border-radius: 4px;
+  box-shadow: 2.8px 2.8px 7.4px 0.6px getBlackShadow(0.17);
+
+  .decor {
+    width: 45px;
+    background-image: url('/images/lesson-decor.jpg');
+    background-size: cover;
+  }
+
+  .contentWrapper {
+    padding: 1rem;
+  }
+
+  .name {
+    font-size: 20px;
+  }
+
+  .description,
+  .date {
+    margin-top: 10px;
+  }
+}

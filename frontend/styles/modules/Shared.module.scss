@@ -18,15 +18,14 @@
   }
 
   &IconContainer {
-    justify-content: center;
-    margin-left: 0.5rem;
-    // margin-top: 0.35rem;
-    // margin-bottom: 0.35rem;
+    margin-left: 1.5rem;
+    margin-top: 0.35rem;
+    margin-bottom: 0.35rem;
   }
 
   &Icon {
     fill: #fff !important;
-    // transform: scale(1.2) !important;
+    transform: scale(1.2) !important;
   }
 
   &AlignBottom {

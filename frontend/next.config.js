@@ -31,7 +31,7 @@ const ContentSecurityPolicy = `
     img-src * blob: data:;
     media-src 'none';
     connect-src *;
-    font-src 'self' *.gumroad.com;
+    font-src 'self' *.gumroad.com https://fonts.gstatic.com;
 `;
 
 const securityHeaders = [

@@ -28,8 +28,8 @@ export const NavBar: React.FC<Props> = ({ classes, handleDrawerOpen, open, handl
   useEffect(() => {
     document.addEventListener('scroll', onPageScroll);
     const href = global.window.location.pathname.replaceAll('/', '');
-    if (href.includes('explore')) {
-      setActiveTab('Explore');
+    if (href.includes('myCourses')) {
+      setActiveTab('My Courses');
       return;
     }
     // setActiveTab(t(`common:headerTabs.${href}`));
@@ -51,8 +51,6 @@ export const NavBar: React.FC<Props> = ({ classes, handleDrawerOpen, open, handl
     }
   }, [locale]);
   
-  console.log(classes);
-
   return (
     <AppBar
       position='fixed'

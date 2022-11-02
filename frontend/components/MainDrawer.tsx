@@ -156,10 +156,10 @@ export const MainDrawer: React.FC<Props> = ({
               [classes.drawerClose]: !open
             })
           }}
-          // className={clsx(classes.drawer, {
-          //   [classes.drawerOpen]: open,
-          //   [classes.drawerClose]: !open
-          // })}
+          className={clsx(classes.drawer, {
+            [classes.drawerOpen]: open,
+            [classes.drawerClose]: !open
+          })}
           variant='permanent'
           open={open}
         >

@@ -1,0 +1,23 @@
+@import '../../../styles/base/mixins.scss';
+@import '../../../styles/base/variables.scss';
+
+.pageDots {
+  &Wrapper {
+    @include flex-horizontal-center;
+    align-items: center;
+    width: 100%;
+
+    & .dot {
+      margin: 10px;
+      height: 15px;
+      width: 15px;
+      background: $grey-color;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    & .active {
+      background: $primary-color;
+    }
+  }
+}

@@ -4,7 +4,9 @@ import React from 'react';
 import { Provider, useDispatch, useSelector } from 'react-redux';
 import store from '../redux/store';
 
-import '../styles/global.css';
+// import '../styles/global.css';
+import '../styles/globals.scss';
+
 import { createEmotionSsrAdvancedApproach } from 'tss-react/next';
 
 // NEAR
@@ -14,6 +16,7 @@ import { Wallet } from '../api/near-wallet';
 import { Web3Storage } from 'web3.storage';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 const { augmentDocumentWithEmotionCache, withAppEmotionCache } = createEmotionSsrAdvancedApproach({ key: 'css' });
 
@@ -39,22 +42,28 @@ function App({ Component, pageProps }) {
     const [isSignedIn, setSignedIn] = useState(false);
 
     useEffect(() => {
+        import('bootstrap');
+    }, []);
+
+    useEffect(() => {
         wallet.startUp().then((isSignedIn) => setSignedIn(isSignedIn));
     }, [wallet]);
 
     return (
-        <Provider store={store}>
-            <ApolloProvider client={graphClient}>
-                <Component
-                    {...pageProps}
-                    isSignedIn={isSignedIn}
-                    helloNEAR={helloNEAR}
-                    wallet={wallet}
-                    web3StorageClient={web3StorageClient}
-                    graphClient={graphClient}
-                />
-            </ApolloProvider>
-        </Provider>
+        <GoogleReCaptchaProvider>
+            <Provider store={store}>
+                <ApolloProvider client={graphClient}>
+                    <Component
+                        {...pageProps}
+                        isSignedIn={isSignedIn}
+                        helloNEAR={helloNEAR}
+                        wallet={wallet}
+                        web3StorageClient={web3StorageClient}
+                        graphClient={graphClient}
+                    />
+                </ApolloProvider>
+            </Provider>
+        </GoogleReCaptchaProvider>
     );
 }
 

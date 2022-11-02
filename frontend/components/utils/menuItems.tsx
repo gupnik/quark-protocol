@@ -11,8 +11,8 @@ export const menuItems: MenuItem[] = [
   },
   {
     icon: MenuBook,
-    link: '/explore',
-    label: 'Explore'
+    link: '/myCourses',
+    label: 'My Courses'
   },
   {
     icon: Group,

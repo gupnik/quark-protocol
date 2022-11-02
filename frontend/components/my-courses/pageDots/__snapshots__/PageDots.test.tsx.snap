@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PageDots component should match the snapshot 1`] = `
+<div
+  className="pageDotsWrapper"
+>
+  <WithStyles(ForwardRef(IconButton))
+    disabled={true}
+    onClick={[Function]}
+  >
+    <Memo([object Object]) />
+  </WithStyles(ForwardRef(IconButton))>
+  <div
+    className="dot active"
+    key="0"
+    onClick={[Function]}
+  />
+  <div
+    className="dot false"
+    key="1"
+    onClick={[Function]}
+  />
+  <div
+    className="dot false"
+    key="2"
+    onClick={[Function]}
+  />
+  <WithStyles(ForwardRef(IconButton))
+    disabled={false}
+    onClick={[Function]}
+  >
+    <Memo([object Object]) />
+  </WithStyles(ForwardRef(IconButton))>
+</div>
+`;
+
+exports[`PageDots component should match the snapshot without dots 1`] = `
+<div
+  className="pageDotsWrapper"
+>
+  <WithStyles(ForwardRef(IconButton))
+    disabled={true}
+    onClick={[Function]}
+  >
+    <Memo([object Object]) />
+  </WithStyles(ForwardRef(IconButton))>
+  <WithStyles(ForwardRef(IconButton))
+    disabled={false}
+    onClick={[Function]}
+  >
+    <Memo([object Object]) />
+  </WithStyles(ForwardRef(IconButton))>
+</div>
+`;
