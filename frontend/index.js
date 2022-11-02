@@ -1,11 +1,16 @@
 // React
 import React from 'react';
 import ReactDOM from 'react-dom';
+import './index.css';
 import App from './App';
+
+import { Provider } from 'react-redux';
+import store from './store';
 
 // NEAR
 import { HelloNEAR } from './near-interface';
 import { Wallet } from './near-wallet';
+import { QWalletProvider } from './hooks/useQWallet';
 
 import { Web3Storage } from 'web3.storage/dist/bundle.esm.min';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
@@ -31,15 +36,13 @@ window.onload = async () => {
     const isSignedIn = await wallet.startUp();
 
     ReactDOM.render(
-        <ApolloProvider client={graphClient}>
-            <App
-                isSignedIn={isSignedIn}
-                helloNEAR={helloNEAR}
-                wallet={wallet}
-                web3StorageClient={web3StorageClient}
-                graphClient={graphClient}
-            />
-        </ApolloProvider>,
+        <Provider store={store}>
+            <ApolloProvider client={graphClient}>
+                <QWalletProvider wallet={wallet} isSignedIn={isSignedIn} helloNEAR={helloNEAR}>
+                    <App web3StorageClient={web3StorageClient} graphClient={graphClient} />
+                </QWalletProvider>
+            </ApolloProvider>
+        </Provider>,
         document.getElementById('root')
     );
 };
