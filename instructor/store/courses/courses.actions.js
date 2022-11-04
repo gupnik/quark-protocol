@@ -1,148 +1,108 @@
-export const GET_COURSES_LOADING = 'GET COURSES LOADING';
+export const GET_COURSES_LOADING = 'GET COURSES LOADGIN';
 export const GET_COURSES_SUCCESS = 'GET COURSES SUCCESS';
 export const GET_COURSES_FAILURES = 'GET COURSES FAILURES';
+export const DELETE_COURSE = 'DELETE COURSE';
 
 export const getCourses = () => ({ type: GET_COURSES_LOADING });
 export const getCoursesSuccess = (courses) => ({ type: GET_COURSES_SUCCESS, payload: courses });
-export const getCoursesFailures = () => ({ type: GET_COURSES_FAILURES });
+export const getCoursesFailure = () => ({ type: GET_COURSES_FAILURES });
+export const delCourse = (id) => ({ type: DELETE_COURSE, payload: id });
 
-export function fetchLastCourses() {
+export function fetchCourses() {
     return async (dispatch) => {
         dispatch(getCourses());
 
         try {
-            // const response = await fetch("http://127.0.0.1:8000/api/courses")
+            // const response = await fetch("http://127.0.0.1:8000/api/admin/courses")
             // const data = await response.json()
+
             const data = {
                 courses: [
                     {
-                        id: '1',
-                        title: 'Sample',
-                        slug: 'a',
+                        title: 'Course 1',
+                        created_at: '20220101',
+                        id: 1,
                         image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                    {
-                        id: '2',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                    {
-                        id: '3',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
+                        sections: [
+                            {
+                                title: 'Section 1',
+                                chapters: [
+                                    {
+                                        chapter_title: 'Chapter 1',
+                                    },
+                                ],
+                            },
+                        ],
+                        chapters: [
+                            {
+                                chapter_title: 'Chapter 1',
+                            },
+                        ],
                     },
                 ],
             };
 
             dispatch(getCoursesSuccess(data.courses));
         } catch (error) {
-            dispatch(getCoursesFailures());
+            dispatch(getCoursesFailure());
         }
     };
 }
 
-export function fetchAllCourses() {
+export function fetchTeacherCourses(id) {
     return async (dispatch) => {
+        dispatch(getCourses());
+
         try {
-            // const response = await fetch('http://127.0.0.1:8000/api/courses');
+            // const response = await fetch(`http://127.0.0.1:8000/api/teacher/${id}/courses`);
             // const data = await response.json();
 
             const data = {
                 courses: [
                     {
-                        id: '1',
-                        title: 'Sample',
-                        slug: 'a',
+                        title: 'Course 1',
+                        created_at: '20220101',
+                        chapter_count: 1,
+                        category_name: 'test',
+                        status: 'active',
+                        id: 1,
                         image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                    {
-                        id: '2',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                    {
-                        id: '3',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
+                        sections: [
+                            {
+                                title: 'Section 1',
+                                chapters: [
+                                    {
+                                        chapter_title: 'Chapter 1',
+                                    },
+                                ],
+                            },
+                        ],
+                        chapters: [
+                            {
+                                chapter_title: 'Chapter 1',
+                            },
+                        ],
                     },
                 ],
             };
 
-            // key={course.id}
-            //     title={course.title}
-            //     slug={course.slug}
-            //     banner={course.image}
-            //     level={course.level}
-            //     views={course.views}
-            //     teacher_image={course.teacher_image}
-            //     category_name={course.category_name}
-            //     follow_courses_count={course.follow_courses_count}
-            //     notes_count={course.notes_count}
-            //     total_note={course.total_note}
-
             dispatch(getCoursesSuccess(data.courses));
         } catch (error) {
-            dispatch(getCoursesFailures());
+            dispatch(getCoursesFailure());
         }
     };
 }
 
-export function fetchCoursesByCategories(id) {
+export function removeCourse(id) {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/categories/${id}/courses`);
-            const data = await response.json();
+            await fetch(`http://127.0.0.1:8000/api/courses/${id}`, {
+                method: 'DELETE',
+            });
 
-            dispatch(getCoursesSuccess(data.courses));
+            dispatch(delCourse(id));
         } catch (error) {
-            dispatch(getCoursesFailures());
-        }
-    };
-}
-
-export function searchCourse(name) {
-    return async (dispatch) => {
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/courses/search/${name}`);
-            const data = await response.json();
-
-            dispatch(getCoursesSuccess(data));
-        } catch (error) {
-            dispatch(getCoursesFailures());
+            console.log(error);
         }
     };
 }

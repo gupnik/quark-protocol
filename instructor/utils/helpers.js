@@ -12,21 +12,6 @@ export const parseRaitings = response => {
   return {count,sum,moy};
 }
 
-export function percentage(a,b){
-  a = parseInt(a);
-  return Math.round(((b*100)/a));
-}
-
-export function parseTrainingObjet(tr){
-  if( tr.length == 0){
-    return false
-  }else{
-    return tr[0]
-  }
-}
-
-
-
 export function parseCurriculumArray(arr){
   let newArray = []
   for (let i = 0; i < arr.length; i++) {
@@ -52,7 +37,9 @@ export function parseCurriculumArray(arr){
         if(elm.id == element.id){
           chapters.push({
             "id": element.chapter_id,
-            "chapter_title": element.chapter_title
+            "chapter_title": element.chapter_title,
+            "chapter_text_content": element.chapter_text_content,
+            "chapter_video_content": element.chapter_video_content
           })
         }
       }
@@ -69,57 +56,47 @@ export function parseCurriculumArray(arr){
   return newArray
 }
 
-export function parseTrainingState(data){
-  const allChapters = parseCurriculumArray(data.curriculum);
-  const chaptersValidate = data.chapterValide;
+export function parseNewCourseContent(sections,chapters){
+  let newArray = []
 
-  for (let i = 0; i < allChapters.length; i++) {
-    const element = allChapters[i];
-    
-    for (let j = 0; j < element.chapters.length; j++) {
-      const elt = element.chapters[j];
-      let findd = false
-      chaptersValidate.forEach(elm => {
-        if(elt.id == elm.chapter_id){
-          findd = true
-        }
-      });
+  for (let i = 0; i < sections.length; i++) {
+    const element = sections[i];
+    let newChapters = []
 
-      element.chapters[j] = {...element.chapters[j], is_valide: findd}
-    }
-
-  }
-
-  return allChapters;
-}
-
-export function findCurrentChapter(arr){
-  let currentChapter = 0; 
-  let find = false
-
-  for (let i = 0; i < arr.length; i++) {
-    const element = arr[i];
-     find = false
-    
-    for (let j = 0; j < element.chapters.length; j++) {
-      const elmt = element.chapters[j];
-      
-
-      if(elmt.is_valide == false){
-        currentChapter = elmt.id;
-        find = true;
-        break;
+    for (let j = 0; j < chapters.length; j++) {
+      const elm = chapters[j];
+      if(element.id === elm.id){
+        newChapters.push({
+          "id": elm.chapter_id,
+          "chapter_title": elm.chapter_title,
+          "chapter_text_content": elm.chapter_text_content,
+          "chapter_video_content": elm.chapter_video_content
+        })
       }
     }
 
-    if(find == true){
-      break;
+    newArray.push({
+      "id": element.id,
+      "section_title": element.section_title,
+      "chapters": newChapters
+    })
+  }
+
+  return newArray;
+}
+
+export function CourseContentIsValid(content){
+  
+  if (content.length <= 0){
+    return false
+  }
+  for (let i = 0; i < content.length; i++) {
+    const element = content[i];
+    
+    if (element.chapters.length <= 0){
+      return false;
     }
   }
 
-  if (find == false){
-   currentChapter = arr[arr.length - 1].chapters[arr[arr.length - 1].chapters.length - 1].id
-  }
-
-  return currentChapter;
+  return true;
 }

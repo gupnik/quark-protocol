@@ -1,18 +1,20 @@
 import { combineReducers } from 'redux';
-import categoriesReducer from './categories/categories.reducer';
-import coursesReducer from './courses/courses.reducer';
-import usersReducer from './users/users.reducer';
 import authenticationReducer from './authentication/authentication.reducer';
-import userReducer from './user/user.reducer';
+import categoriesReducer from './categories/categories.reducer';
+import usersReducer from './users/users.reducer';
 import dashboardReducer from './dashboard/dashboard.reducer';
-
+import coursesReducer from './courses/courses.reducer';
+import reviewsReducer from './reviews/reviews.reducer';
+import courseReducer from './course/course.reducer';
+import applicatitonsReducer from './applications/applications.reducer';
 const rootReducer = combineReducers({
+    authentication: authenticationReducer,
     categories: categoriesReducer,
+    dashboard: dashboardReducer,
     users: usersReducer,
     courses: coursesReducer,
-    authentication: authenticationReducer,
-    user: userReducer,
-    dashboard: dashboardReducer,
+    reviews: reviewsReducer,
+    course: courseReducer,
+    applications: applicatitonsReducer,
 });
-
 export default rootReducer;

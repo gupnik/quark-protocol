@@ -17,7 +17,7 @@ const Chapter = ({title,textContent,videoContent, id, courseId, handleClick}) =>
     <div className="section-list-item">
       <div className="section-item-title">
         <DescriptionIcon />
-        <span className="section-item-title-text ">Chapitre {title}</span>
+        <span className="section-item-title-text ">{title}</span>
       </div>
       <button type="button" className="section-item-tools"><EditIcon onClick={handleClick} /></button>
       <button type="button" className="section-item-tools" onClick={onDelete} ><DeleteIcon /></button>
