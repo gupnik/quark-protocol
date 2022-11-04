@@ -6,6 +6,21 @@ export class HelloNEAR {
         this.wallet = walletToUse;
     }
 
+    async getCourseCount() {
+        return await this.wallet.viewMethod({
+            contractId: this.contractId,
+            method: 'get_course_count',
+        });
+    }
+
+    async createCourse(title) {
+        return await this.wallet.callMethod({
+            contractId: this.contractId,
+            method: 'create_course',
+            args: { title: 'Hello', price: 0 },
+        });
+    }
+
     async getQuestionCount() {
         return await this.wallet.viewMethod({
             contractId: this.contractId,

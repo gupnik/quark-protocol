@@ -5,7 +5,7 @@ import { HelloNEAR } from '../near-interface';
 export interface QWallet {
     wallet: any | undefined,
     isSignedIn: Boolean,
-    helloNear: any | undefined
+    helloNEAR: any | undefined
 }
 
 const QWalletContext: React.Context<QWallet> =

@@ -10,18 +10,24 @@ import CourseContent from './CourseContent';
 import CourseInformation from "./CourseInformation";
 import CourseMedia from './CourseMedia';
 import CoursePublish from './CoursePublish';
+
+import { useQWallet } from '../../hooks/useQWallet';
+
 function NewCourse({
     currentUser,
     course,
     currentCourseContent,
     // courseStatus,
     match}) {
+
+      const { helloNEAR } = useQWallet();
+
   const dispatch = useDispatch()
   const [hasNewCourse, setHasNewCourse] = useState(true)
   const [isEditCourse, setIsEditCourse] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [newCourse, setNewCourse] = useState({title: "", hours: "", 
-                                  description: "", topics: "angular frontend",
+                                  description: "", topics: "",
                                   category_id: 3,level: "Beginner"})
   const [errors, setErrors] = useState({})
   const handlePublish = useCallback(
@@ -66,7 +72,7 @@ function NewCourse({
         
         if(hasNewCourse == true){
             let description = (convertToHTML(newCourse.description.getCurrentContent()));
-            dispatch(storeCourse(newCourse,description,currentUser));
+            dispatch(storeCourse(helloNEAR, newCourse,description,currentUser));
             setHasNewCourse(false)
           }else{
             dispatch(updateCourse(newCourse,course.id))

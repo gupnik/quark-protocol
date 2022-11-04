@@ -43,7 +43,8 @@ export function fetchCourse(slug) {
     };
 }
 
-export function storeCourse(course, description, teacher_id) {
+export function storeCourse(helloNEAR, course, description, teacher_id) {
+    console.log(helloNEAR, course);
     return async (dispatch) => {
         try {
             // const response = await fetch('http://127.0.0.1:8000/api/courses', {
@@ -63,9 +64,12 @@ export function storeCourse(course, description, teacher_id) {
             //     }),
             // });
 
+            await helloNEAR.createCourse(course.title);
+
             // const data = await response.json();
             const data = {
                 course: {
+                    title,
                     id: 1,
                     image: '',
                     sections: [
