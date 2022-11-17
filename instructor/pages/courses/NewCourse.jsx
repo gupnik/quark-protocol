@@ -10,7 +10,7 @@ import CourseContent from './CourseContent';
 import CourseInformation from "./CourseInformation";
 import CourseMedia from './CourseMedia';
 import CoursePublish from './CoursePublish';
-
+import imgg from "../../assets/img/thumbnail-demo.jpg";
 import { useQWallet } from '../../hooks/useQWallet';
 
 function NewCourse({
@@ -20,21 +20,28 @@ function NewCourse({
     // courseStatus,
     match}) {
 
-      const { helloNEAR } = useQWallet();
+      const { helloNEAR, isSignedIn } = useQWallet();
 
   const dispatch = useDispatch()
   const [hasNewCourse, setHasNewCourse] = useState(true)
   const [isEditCourse, setIsEditCourse] = useState(false)
   const [currentStep, setCurrentStep] = useState(1)
   const [newCourse, setNewCourse] = useState({title: "", hours: "", 
+                                  image: imgg,
                                   description: "", topics: "",
-                                  category_id: 3,level: "Beginner"})
+                                  category_id: 3,level: "Beginner", sections: []})
   const [errors, setErrors] = useState({})
   const handlePublish = useCallback(
     (newCourse) => {
-      dispatch(publishCourse(newCourse))
+      // dispatch(publishCourse(newCourse))
+      console.log(isSignedIn);
+      helloNEAR && isSignedIn && helloNEAR
+            .createCourse(newCourse.title)
+            .then((val) => {
+              console.log(val);
+            });
     },
-    [dispatch])
+    [helloNEAR, isSignedIn])
 
   const handleStep = () => {
     switch (currentStep) {
@@ -43,11 +50,11 @@ function NewCourse({
           course={newCourse} handleChange={setNewCourse}
           errors={errors} />
       case 2:
-        return <CourseContent />
+        return <CourseContent course={newCourse} handleChange={setNewCourse} />
       case 3: 
-        return <CourseMedia />
+        return <CourseMedia  course={newCourse} handleChange={setNewCourse}/>
       case 4: 
-       return <CoursePublish />
+       return <CoursePublish  course={newCourse}/>
       default:
         <CourseInformation />
     }
@@ -72,10 +79,10 @@ function NewCourse({
         
         if(hasNewCourse == true){
             let description = (convertToHTML(newCourse.description.getCurrentContent()));
-            dispatch(storeCourse(helloNEAR, newCourse,description,currentUser));
+            // dispatch(storeCourse(helloNEAR, newCourse,description,currentUser));
             setHasNewCourse(false)
           }else{
-            dispatch(updateCourse(newCourse,course.id))
+            // dispatch(updateCourse(newCourse,course.id))
           }
       }
       setCurrentStep(currentStep + 1)
@@ -142,7 +149,7 @@ function NewCourse({
           
           {currentStep < 4 ? 
             <Button text="Next" handleClick={() => changeStep()} /> : 
-            course.status === "Publish" ? null :  CourseContentIsValid(currentCourseContent) ? <Button text="Publish" handleClick={ () => handlePublish(course.id)} /> : null }            
+            course.status === "Publish" ? null :  CourseContentIsValid(newCourse) ? <Button text="Publish" handleClick={ () => handlePublish(newCourse)} /> : null }            
         </div>   
         </div> 
       </div>

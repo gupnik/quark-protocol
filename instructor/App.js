@@ -22,6 +22,7 @@ import Users from './pages/users/Users';
 import Settings from './pages/settings/Settings';
 import Courses from './pages/courses/Courses';
 import Applications from './pages/Applications/Applications';
+import Login from './pages/Login';
 
 export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, graphClient }) {
     // const { loading, data } = useQuery(questionsQuery);
@@ -114,6 +115,9 @@ export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, 
 
     return (
         <div className="App">
+            { 
+            // isSignedIn ? 
+            // (
             <Router>
                 <Navigation />
                 <Switch>
@@ -128,6 +132,11 @@ export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, 
                     <PublicRoute path="/edit-course/:slug" component={NewCourse} exact />
                 </Switch>
             </Router>
+            // ) :
+            //     <Router>
+            //         <PublicRoute path="/login" component={Login} exact />
+            //     </Router>
+            }
         </div>
         // <>
         //     <SignOutButton accountId={wallet.accountId} onClick={() => wallet.signOut()} />

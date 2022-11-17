@@ -8,15 +8,19 @@ import Section from "../../components/course/Section";
 import FormInput from '../../components/form/FormInput';
 import useModal from '../../hooks/useModal';
 import { fetchCourseContent, storeSection } from '../../store/course/course.actions';
-const CourseContent = ({courseContent,courseId}) => {
+const CourseContent = ({
+  course,
+  handleChange,
+  // courseContent,courseId
+}) => {
   const dispatch = useDispatch()
   const { isShowing: isLoginFormShowed, toggle: toggleLoginForm } = useModal();
   const [state, setState] = useState('')
   const [error, setError] = useState({})
 
-  useEffect(() => {
-    dispatch(fetchCourseContent(courseId.id))
-  }, [courseId])
+  // useEffect(() => {
+  //   dispatch(fetchCourseContent(courseId.id))
+  // }, [courseId])
 
   const handleSubmitSection = (e) => {
     e.preventDefault()
@@ -29,7 +33,12 @@ const CourseContent = ({courseContent,courseId}) => {
     setError(err)
 
     if( Object.getOwnPropertyNames(err).length == 0){
-      dispatch(storeSection(state,courseId.id))
+      // dispatch(storeSection(state,courseId.id))
+      handleChange({...course, sections: course.sections.concat([{
+        id: course.sections.length,
+        section_title: state,
+        chapters: []
+      }])})
       toggleLoginForm()
       setState('')
     }
@@ -49,8 +58,11 @@ const CourseContent = ({courseContent,courseId}) => {
           /> 
         </PageHeader>
 
-      {courseContent.map(section => (
+      {course.sections.map(section => (
         <Section 
+          course={course}
+          sectionId={section.id}
+          handleChange={handleChange}
           key={section.id} 
           id={section.id}
           title={section.section_title} 

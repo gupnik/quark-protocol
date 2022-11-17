@@ -18,7 +18,10 @@ import FormInput from '../form/FormInput';
 import Chapter from './Chapter';
 
 
-const Section = ({id,title,chapters,courseId}) => { 
+const Section = ({
+  course, sectionId,
+  handleChange,
+  id,title,chapters,courseId}) => { 
   const { isShowing: isLoginFormShowed, toggle: toggleLoginForm } = useModal();
   const [state, setstate] = useState(title)
   const [chapterTitle, setChapterTitle] = useState('')
@@ -28,10 +31,11 @@ const Section = ({id,title,chapters,courseId}) => {
   const [error, setError] = useState({})
   const [chapterErrors, setChapterErrors] = useState({})
   const [editedChapter, setEditedChapter] = useState({id: null})
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
   const onDelete = useCallback(() => {
-      dispatch(deleteSection(id,courseId))
-    },[dispatch])
+      // dispatch(deleteSection(id,courseId))
+      course.sections.remove(sectionId);
+    },[])
   
   const [editorState, setEditorState] = useState(
     () => EditorState.createEmpty(),
@@ -46,7 +50,9 @@ const Section = ({id,title,chapters,courseId}) => {
     }
     setError(err)
     if( Object.getOwnPropertyNames(err).length == 0){
-    dispatch(updateSection(state,courseId,id))
+    // dispatch(updateSection(state,courseId,id))
+    course.sections[sectionId].section_title = state;
+    handleChange(course);
 
     setShowEditForm(!showEditForm) }
   }
@@ -66,7 +72,15 @@ const Section = ({id,title,chapters,courseId}) => {
     }
     setChapterErrors(err)
     if(Object.getOwnPropertyNames(err).length === 0){
-      dispatch(storeChapter(chapterTitle,textContent,courseId,id))
+      // dispatch(storeChapter(chapterTitle,textContent,courseId,id))
+
+      course.sections[sectionId].chapters.push({
+        id: course.sections[sectionId].chapters.length,
+        chapter_title: chapterTitle,
+        chapter_text_content: textContent,
+      });
+      handleChange(course);
+
       setChapterTitle('')
       setEditorState(() => EditorState.createEmpty())
       toggleLoginForm()
@@ -77,7 +91,15 @@ const Section = ({id,title,chapters,courseId}) => {
   const handleUpdateChapter = e => {
     e.preventDefault()
     const textContent = (convertToHTML(editorState.getCurrentContent()))
-    dispatch(updateChapter(chapterTitle, editedChapter.id, courseId, textContent))
+    // dispatch(updateChapter(chapterTitle, editedChapter.id, courseId, textContent))
+
+    course.sections[sectionId].chapters[editedChapter.id] = {
+      id: editedChapter.id,
+      chapter_title: chapterTitle,
+      chapter_text_content: textContent,
+    };
+    handleChange(course);
+
     setChapterTitle('')
     setEditorState(() => EditorState.createEmpty())
     toggleLoginForm()

@@ -4,8 +4,10 @@ import { connect, useDispatch } from 'react-redux';
 import imgg from "../../assets/img/thumbnail-demo.jpg";
 import { updateCourse } from "../../store/course/course.actions";
 import { getBase64 } from '../../utils/convertFile';
-const CourseMedia = ({image,courseId}) => {
-  const [courseImage, setCourseImage] = useState(image)
+const CourseMedia = ({
+  course, 
+  handleChange}) => {
+  const [courseImage, setCourseImage] = useState(imgg)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -18,7 +20,8 @@ const CourseMedia = ({image,courseId}) => {
     let image = await getBase64(courseImage);
     setCourseImage(image)
 
-    dispatch(updateCourse({image},courseId))
+    // dispatch(updateCourse({image},courseId))
+    handleChange({ ...course, image: image});
   }
 
   return (

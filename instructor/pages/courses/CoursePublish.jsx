@@ -4,6 +4,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { CourseContentIsValid } from '../../utils/helpers';
 const CoursePublish = ({
+  course,
   currentNewCourse
 }) => {
   return (
@@ -14,7 +15,7 @@ const CoursePublish = ({
       <div className="publish-block">
         <EditIcon/>
 
-        {CourseContentIsValid(currentNewCourse) == true ?
+        {CourseContentIsValid(course) == true ?
           <p>
          Your course is in a draft state. Students cannot view, purchase or enroll in this course. For students that are already enrolled, this course will not appear on their student Dashboard.</p>
         : 
