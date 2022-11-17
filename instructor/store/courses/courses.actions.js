@@ -49,11 +49,14 @@ export function fetchCourses() {
     };
 }
 
-export function fetchTeacherCourses(id) {
+export function fetchTeacherCourses(id, helloNEAR) {
     return async (dispatch) => {
         dispatch(getCourses());
 
         try {
+            const courseCount = await helloNEAR.getCourseCount();
+            console.log(courseCount)
+
             // const response = await fetch(`http://127.0.0.1:8000/api/teacher/${id}/courses`);
             // const data = await response.json();
 

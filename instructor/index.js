@@ -39,7 +39,7 @@ window.onload = async () => {
         <Provider store={store}>
             <ApolloProvider client={graphClient}>
                 <QWalletProvider wallet={wallet} isSignedIn={isSignedIn} helloNEAR={helloNEAR}>
-                    <App web3StorageClient={web3StorageClient} graphClient={graphClient} />
+                    <App web3StorageClient={web3StorageClient} graphClient={graphClient} isSignedIn={isSignedIn}  wallet={wallet} />
                 </QWalletProvider>
             </ApolloProvider>
         </Provider>,

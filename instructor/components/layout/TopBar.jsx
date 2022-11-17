@@ -18,8 +18,17 @@ import MenuOutlinedIcon from '@material-ui/icons/MenuOutlined';
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
 import NightsStayOutlinedIcon from '@material-ui/icons/NightsStayOutlined';
 
-function TopBar({onLogout, user}) {
+import { useQWallet } from '../../hooks/useQWallet'
+
+function TopBar({user}) {
+	const { isSignedIn, wallet } = useQWallet();
 	const [userDropdown, setUserDropdown] = useState(false)
+
+	const onLogout = async () => {
+		if (isSignedIn) {
+			await wallet.signOut();
+		}
+	};
 
 	const toggleUserDropdown = () => {
 		setUserDropdown(!userDropdown);

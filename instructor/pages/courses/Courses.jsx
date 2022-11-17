@@ -12,7 +12,10 @@ import Modal from "../../components/common/Modal";
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import { useQWallet } from '../../hooks/useQWallet';
 function Courses({user, dispatch,courses}) {
+  const { helloNEAR, isSignedIn } = useQWallet();
+
   const [course, setCourse] = useState({id: null, title: ""})
   const { isShowing: isDeleteModalShowed, toggle: toggleDeleteModal } = useModal();
 
@@ -28,9 +31,9 @@ function Courses({user, dispatch,courses}) {
 
   useEffect(() => {
     if(user.profil_id == 1){
-      dispatch(actions.fetchCourses())
+      dispatch(actions.fetchCourses(helloNEAR))
     }else{
-      dispatch(actions.fetchTeacherCourses(user.id))
+      dispatch(actions.fetchTeacherCourses(user.id, helloNEAR))
     }
   }, [dispatch])
   return (
