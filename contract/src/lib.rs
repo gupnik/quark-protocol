@@ -1,13 +1,30 @@
 use near_sdk::borsh::{self, BorshDeserialize, BorshSerialize};
 use near_sdk::collections::{LookupMap, Vector};
 use near_sdk::{env, log, near_bindgen, AccountId};
+
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct Chapter {
+    pub chapter_id: u64,
+    pub chapter_title: String,
+    pub chapter_text_content: Option<String>,
+    pub chapter_video_content: Option<String>,
+}
+
+#[derive(BorshDeserialize, BorshSerialize)]
+pub struct Section {
+    pub section_id: u64,
+    pub section_title: String,
+    pub chapters: Vector<Chapter>,
+}
+
 #[derive(BorshDeserialize, BorshSerialize)]
 pub struct Course {
     pub course_id: u64,
     pub creator: AccountId,
     pub title: String,
+    pub image: String,
     pub price: u64,
-    pub lessons: Vector<String>,
+    pub sections: Vector<Section>,
     pub quiz: Option<String>,
     pub subscriber_count: u64,
 }
@@ -65,15 +82,16 @@ impl Contract {
         self.course_count
     }
 
-    pub fn create_course(&mut self, title: String, price: u64) -> u64 {
+    pub fn create_course(&mut self, title: String, image: String, price: u64) -> u64 {
         let account_id = env::signer_account_id();
         self.course_count += 1;
         let course = Course {
             course_id: self.course_count,
             creator: account_id,
             title,
+            image,
             price,
-            lessons: Vector::new(b"l"),
+            sections: Vector::new(b"s"),
             quiz: None,
             subscriber_count: 0,
         };
@@ -98,10 +116,27 @@ impl Contract {
         return course;
     }
 
-    pub fn add_lesson(&mut self, course_id: u64, lesson_cid: String) {
+    pub fn add_section(&mut self, course_id: u64, section_title: String) -> u64 {
         let mut course = self.assert_course_creator(course_id);
-        course.lessons.push(&lesson_cid);
+        let section_count = course.sections.len()+1;
+        course.sections.push(&Section { section_id: section_count, section_title, chapters: Vector::new(b"c") });
         self.courses.insert(&course_id, &course);
+        section_count
+    }
+
+    pub fn add_chapter(&mut self, course_id: u64, section_id: u64, chapter_title: String, chapter_text_content: Option<String>, chapter_video_content: Option<String>) -> u64 {
+        let mut course = self.assert_course_creator(course_id);
+        let mut section = course.sections.get(section_id-1).unwrap();
+        let chapter_count = section.chapters.len()+1;
+        section.chapters.push(&Chapter {
+            chapter_id: chapter_count,
+            chapter_title,
+            chapter_text_content,
+            chapter_video_content
+        });
+        course.sections.replace(section_id-1, &section);
+        self.courses.insert(&course_id, &course);
+        chapter_count
     }
 
     pub fn subscribe_course(&mut self, course_id: u64) {

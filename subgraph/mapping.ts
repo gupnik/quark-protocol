@@ -1,5 +1,5 @@
 import { near, BigInt, log, json } from "@graphprotocol/graph-ts";
-import { Question, Answer, User } from "./generated/schema";
+import { Question, Answer, User, Course, Section, Chapter } from "./generated/schema";
 
 export function handleReceipt(receipt: near.ReceiptWithOutcome): void {
   const actions = receipt.receipt.actions;
@@ -21,7 +21,45 @@ function handleAction(
 
   const functionCall = action.toFunctionCall();
   const functionArgs = json.fromString(functionCall.args.toString()).toObject();
-  if (functionCall.methodName == "ask") {
+  if (functionCall.methodName == "create_course") {
+    let user = User.load(receipt.signerId);
+    if (user == null) {
+        user = new User(receipt.signerId);
+        user.save();
+    }
+
+    const course = new Course(status.toValue().toString());
+    course.creator = user.id;
+    course.title = functionArgs.get("title")!.toString();
+    course.image = functionArgs.get("image")!.toString();
+    course.price = BigInt.fromU64(functionArgs.get("price")!.toU64());
+    course.save();
+  } else if (functionCall.methodName == "add_section") {
+    let user = User.load(receipt.signerId);
+    if (user == null) {
+        user = new User(receipt.signerId);
+        user.save();
+    }
+
+    const course = Course.load(functionArgs.get("course_id")!.toBigInt().toString());
+    const section = new Section(receipt.id.toBase58());
+    section.course = course!.id;
+    section.section_title = functionArgs.get("section_title")!.toString();
+    section.save();
+  } else if (functionCall.methodName == "add_chapter") {
+    let user = User.load(receipt.signerId);
+    if (user == null) {
+        user = new User(receipt.signerId);
+        user.save();
+    }
+
+    const course = Course.load(functionArgs.get("course_id")!.toBigInt().toString());
+    const section = Section.load(functionArgs.get("section_id")!.toBigInt().toString());
+    const chapter = new Chapter(receipt.id.toBase58());
+    chapter.section = section!.id;
+    chapter.chapter_title = functionArgs.get("chapter_title")!.toString();
+    chapter.save();
+  } else if (functionCall.methodName == "ask") {
     let user = User.load(receipt.signerId);
     if (user == null) {
         user = new User(receipt.signerId);

@@ -1,7 +1,32 @@
 type User @entity {
     id: ID!
+    created_courses: [Course!] @derivedFrom(field: "creator")
+    subscribed_courses: [Course!] @derivedFrom(field: "subscribers")
     questions: [Question!] @derivedFrom(field: "questioner")
     answers: [Answer!] @derivedFrom(field: "answerer")
+}
+
+type Course @entity {
+    id: ID!
+    title: String!
+    image: String!
+    price: BigInt!
+    creator: User!
+    sections: [Section!] @derivedFrom(field: "course")
+    subscribers: [User!]
+}
+
+type Section @entity {
+    id: ID!
+    section_title: String!
+    chapters: [Chapter!] @derivedFrom(field: "section")
+    course: Course!
+}
+
+type Chapter @entity {
+    id: ID!
+    chapter_title: String!
+    section: Section!
 }
 
 type Question @entity {

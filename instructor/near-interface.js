@@ -17,7 +17,7 @@ export class HelloNEAR {
         return await this.wallet.callMethod({
             contractId: this.contractId,
             method: 'create_course',
-            args: { title: 'Hello', price: 0 },
+            args: { title: 'Hello', image: "", price: 0 },
         });
     }
 

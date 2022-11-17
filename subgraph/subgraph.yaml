@@ -8,13 +8,18 @@ dataSources:
       name: receipts
       network: near-testnet
       source:
-          account: 'dev-1666685689602-36364233853500'
+          account: 'dev-1668678178353-37288003758067'
           startBlock: 103435250
       mapping:
           apiVersion: 0.0.6
           language: wasm/assemblyscript
           file: ./mapping.ts
           entities:
+              - Course
+              - Section
+              - Chapter
+              - Creator
+              - Subscriber
               - Questioner
               - Question
           receiptHandlers:
