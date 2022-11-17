@@ -223,15 +223,15 @@ export function updateCourse(course, id) {
     };
 }
 
-export function publishCourse(id) {
+export function publishCourse(course) {
     return async (dispatch) => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/api/courses/publish/${id}`, {
-                method: 'POST',
-            });
-            const data = await response.json();
+            // const response = await fetch(`http://127.0.0.1:8000/api/courses/publish/${id}`, {
+            //     method: 'POST',
+            // });
+            // const data = await response.json();
 
-            dispatch(createNewCourse(data.course));
+            dispatch(createNewCourse(course));
             toast(`${data.message}`, {
                 position: toast.POSITION.BOTTOM_LEFT,
                 theme: 'colored',

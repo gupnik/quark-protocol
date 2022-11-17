@@ -42,21 +42,21 @@ test.afterEach.always(async (t) => {
 
 test('creates a course', async (t) => {
   const { contract, alice, bob, charlie } = t.context.accounts;
-  await alice.call(contract, 'create_course', { title: 'Course I', image: 'Image I', price: 0 });
+  await alice.call(contract, 'create_course', { course_id: 1, title: 'Course I', image: 'Image I', price: 0 });
   let courseCount: Number = await contract.view('get_course_count');
   t.is(courseCount, 1);
 
-  await alice.call(contract, 'add_section', { course_id: 1, section_title: 'A - Section I' });
+  await alice.call(contract, 'add_section', { course_id: 1, section_id: 1, section_title: 'A - Section I' });
 
-  await alice.call(contract, 'add_chapter', { course_id: 1, section_id: 1, chapter_title: 'A - Chapter I' });
+  await alice.call(contract, 'add_chapter', { course_id: 1, section_id: 1, chapter_id: 1, chapter_title: 'A - Chapter I' });
 
-  await bob.call(contract, 'create_course', { title: 'Course 2', image: 'Image II', price: 0 });
+  await bob.call(contract, 'create_course', { course_id: 2, title: 'Course 2', image: 'Image II', price: 0 });
   courseCount = await contract.view('get_course_count');
   t.is(courseCount, 2);
 
-  await bob.call(contract, 'add_section', { course_id: 2, section_title: 'B - Section I' });
+  await bob.call(contract, 'add_section', { course_id: 2, section_id: 1, section_title: 'B - Section I' });
 
-  await bob.call(contract, 'add_chapter', { course_id: 2, section_id: 1, chapter_title: 'B - Chapter I' });
+  await bob.call(contract, 'add_chapter', { course_id: 2, section_id: 1, chapter_id: 1, chapter_title: 'B - Chapter I' });
 
   await bob.call(contract, 'subscribe_course', { course_id: 1 });
 })

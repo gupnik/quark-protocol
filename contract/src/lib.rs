@@ -82,9 +82,12 @@ impl Contract {
         self.course_count
     }
 
-    pub fn create_course(&mut self, title: String, image: String, price: u64) -> u64 {
+    pub fn create_course(&mut self, course_id: u64, title: String, image: String, price: u64) -> u64 {
         let account_id = env::signer_account_id();
         self.course_count += 1;
+        if course_id != self.course_count {
+            panic!("Invalid course_id");
+        }
         let course = Course {
             course_id: self.course_count,
             creator: account_id,
@@ -116,18 +119,24 @@ impl Contract {
         return course;
     }
 
-    pub fn add_section(&mut self, course_id: u64, section_title: String) -> u64 {
+    pub fn add_section(&mut self, course_id: u64, section_id: u64, section_title: String) -> u64 {
         let mut course = self.assert_course_creator(course_id);
         let section_count = course.sections.len()+1;
+        if section_id != section_count {
+            panic!("Invalid section_id");
+        }
         course.sections.push(&Section { section_id: section_count, section_title, chapters: Vector::new(b"c") });
         self.courses.insert(&course_id, &course);
         section_count
     }
 
-    pub fn add_chapter(&mut self, course_id: u64, section_id: u64, chapter_title: String, chapter_text_content: Option<String>, chapter_video_content: Option<String>) -> u64 {
+    pub fn add_chapter(&mut self, course_id: u64, section_id: u64, chapter_id: u64, chapter_title: String, chapter_text_content: Option<String>, chapter_video_content: Option<String>) -> u64 {
         let mut course = self.assert_course_creator(course_id);
         let mut section = course.sections.get(section_id-1).unwrap();
         let chapter_count = section.chapters.len()+1;
+        if chapter_id != chapter_count {
+            panic!("Invalid section_id");
+        }
         section.chapters.push(&Chapter {
             chapter_id: chapter_count,
             chapter_title,

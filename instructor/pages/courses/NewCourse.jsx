@@ -33,12 +33,12 @@ function NewCourse({
   const [errors, setErrors] = useState({})
   const handlePublish = useCallback(
     (newCourse) => {
-      // dispatch(publishCourse(newCourse))
       console.log(isSignedIn);
       helloNEAR && isSignedIn && helloNEAR
-            .createCourse(newCourse.title)
+            .createCourse(newCourse)
             .then((val) => {
               console.log(val);
+              dispatch(publishCourse(newCourse))
             });
     },
     [helloNEAR, isSignedIn])

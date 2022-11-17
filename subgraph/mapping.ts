@@ -28,7 +28,8 @@ function handleAction(
         user.save();
     }
 
-    const course = new Course(status.toValue().toString());
+    log.info("Create: {}", [functionArgs.get("course_id")!.toBigInt().toString()]);
+    const course = new Course(functionArgs.get("course_id")!.toBigInt().toString());
     course.creator = user.id;
     course.title = functionArgs.get("title")!.toString();
     course.image = functionArgs.get("image")!.toString();
@@ -41,8 +42,9 @@ function handleAction(
         user.save();
     }
 
+    log.info("Add Section: {}", [functionArgs.get("course_id")!.toBigInt().toString()]);
     const course = Course.load(functionArgs.get("course_id")!.toBigInt().toString());
-    const section = new Section(receipt.id.toBase58());
+    const section = new Section(course!.id + functionArgs.get("section_id")!.toBigInt().toString());
     section.course = course!.id;
     section.section_title = functionArgs.get("section_title")!.toString();
     section.save();
@@ -53,9 +55,10 @@ function handleAction(
         user.save();
     }
 
+    log.info("Add Chapter: {}", [functionArgs.get("course_id")!.toBigInt().toString(), functionArgs.get("section_id")!.toBigInt().toString()]);
     const course = Course.load(functionArgs.get("course_id")!.toBigInt().toString());
     const section = Section.load(functionArgs.get("section_id")!.toBigInt().toString());
-    const chapter = new Chapter(receipt.id.toBase58());
+    const chapter = new Chapter(course!.id + section!.id + functionArgs.get("chapter_id")!.toBigInt().toString());
     chapter.section = section!.id;
     chapter.chapter_title = functionArgs.get("chapter_title")!.toString();
     chapter.save();
