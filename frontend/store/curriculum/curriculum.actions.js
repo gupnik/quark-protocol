@@ -13,25 +13,39 @@ export function fetchCourseCurriculum(id) {
         dispatch(getCurriculum());
 
         try {
-            // const response = await fetch(`http://127.0.0.1:8000/api/course/${id}/curriculum`)
-            // const data = await response.json()
-
-            const data = {
-                chapter_title: 'Hey',
-                section_title: 'Hello',
-                chapters: [
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
                     {
-                        id: 1,
-                        title: 'Sm',
-                        description: 'Sc',
-                        textContent: 'asdfkjsdgf',
-                        video: '',
-                        section_id: 1,
+                      course(id: ${id}) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
                     },
-                ],
-            };
+                })
+            });
+            const data = await response.json()
 
-            dispatch(getCurriculumSuccess(parseCurriculumArray(data)));
+            dispatch(getCurriculumSuccess((data.data.course.sections)));
         } catch (error) {
             dispatch(getCurriculumFailures());
         }

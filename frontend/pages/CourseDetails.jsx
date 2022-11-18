@@ -23,6 +23,7 @@ import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import { connect } from 'react-redux';
+import { useQWallet } from '../hooks/useQWallet';
 function CourseDetails({
   match,
   dispatch,
@@ -34,13 +35,15 @@ function CourseDetails({
   currentUser,
   currentTraining
 }) {
+  const { isSignedIn } = useQWallet();
+
   const renderTrainingButton = () => {
     const { slug } = match.params
-    if (token == null || currentTraining == false){
+    if (!isSignedIn || currentTraining == false){
       return (
          <Link to={`/training/${slug}`}>
             <Button 
-            text="Commencer la formation"
+            text="Subscribe"
             bgColorHover="#0073ff"
             Icon={ArrowRightAltIcon} />
          </Link>
@@ -50,7 +53,7 @@ function CourseDetails({
         <div className="d-flex align-items-center justify-content-center" style={{flexDirection: 'column'}}>
           <Link to={`/training/${slug}`}>
             <Button 
-            text="Continuer la formation"
+            text="Continue"
             bgColorHover="#0073ff"
             Icon={ArrowRightAltIcon} />
           </Link>
@@ -101,7 +104,7 @@ function CourseDetails({
             <div className="col-lg-8">
               <div className="course_dtls_left mb-30 p-3 pb-4" style={{background: '#ffff'}}> 
                 <div className="cd_thumb">
-                  { course.image == null ? <img src={cd_thumb} alt="" style={{width: '100%'}} /> : 
+                  { course.image == null || course.image.startsWith("http://localhost") ? <img src={cd_thumb} alt="" style={{width: '100%'}} /> : 
                     <img src={course.image} alt="" style={{width: '100%'}} />}
                   
                 </div>
@@ -140,7 +143,7 @@ function CourseDetails({
                 <Tabs> 
                   <div label="Overview"> 
                     <div className="ov_text_wrap">
-                      <p dangerouslySetInnerHTML={createMarkup(course.description)}></p>
+                      <p dangerouslySetInnerHTML={createMarkup(course.description || course.title)}></p>
                     </div>
                   </div>
                   <div label="Curriculum"> 
@@ -158,6 +161,7 @@ function CourseDetails({
 
                                     <li key={chapter.id}>
                                         <a > {chapter.chapter_title} </a>
+                                        <a > {chapter.chapter_text_content} </a>
                                     </li>
                                   ))}
                                 </ul>
@@ -245,7 +249,7 @@ function CourseDetails({
               <div className="course_widget mb-30">
                   <div className="thumb_wrap pos-rel">
                       <div className="thumb">
-                      { course.image == null ? <img src={cd_thumb} alt="" style={{width: '100%'}} /> : 
+                      { course.image == null || course.image.startsWith("http://localhost")? <img src={cd_thumb} alt="" style={{width: '100%'}} /> : 
                         <img src={course.image} alt="" style={{width: '100%'}} />}
                       </div>
                      

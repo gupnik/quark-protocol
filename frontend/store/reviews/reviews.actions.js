@@ -46,8 +46,17 @@ export function fetchCourseReviews(id){
   return async dispatch => {
     dispatch(getReview())
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/course/${id}/reviews`)
-      const data = await response.json()
+      // const response = await fetch(`http://127.0.0.1:8000/api/course/${id}/reviews`)
+      // const data = await response.json()
+
+      const data = {
+        reviews: [
+          {
+            created_at: "20220101",
+            content: "Great course"
+          }
+        ]
+      }
 
       dispatch(getReviewSuccess(data.reviews))
     } catch (error) {

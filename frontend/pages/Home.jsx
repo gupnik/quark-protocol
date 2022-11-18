@@ -57,7 +57,7 @@ function Home({
                               </div>
                               <span># Learn Anything, Anytime, Anywhere</span>
                               <h2>Best Online Learning For your future.</h2>
-                              <p>We believe everyone has the capacity to be creative. Turitor is a place where
+                              <p>An open and transparent Protocol where
                                   people develop their own potential.</p>
                               <div className="hero_btn mt-15 d-flex">
                               <Link to="/courses">
@@ -81,7 +81,7 @@ function Home({
           </div>
       </section>
     </div>
-    <section className="courses_area pt-5 pb-5 category-section">
+    {/* <section className="courses_area pt-5 pb-5 category-section">
       <div className="container">
         <div className="row align-items-center mb-5">
             <div className="col-lg-8 col-md-8">
@@ -110,7 +110,7 @@ function Home({
           ))}
         </div>
       </div>
-    </section>
+    </section> */}
 
 
     <section className="courses_area pt-5 pb-5 category-section">
@@ -138,7 +138,7 @@ function Home({
             <CourseCard 
               key={course.id} 
               title={course.title}
-              slug={course.slug}
+              slug={course.id}
               banner={course.image}
               level={course.level}
               views={course.views}
