@@ -18,6 +18,7 @@ export function fetchTrainings(id) {
 
             const data = [
                 {
+                    course_title: "First",
                     course_slug: '1',
                     inscription_date: '12022022',
                 },
