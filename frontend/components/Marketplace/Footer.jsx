@@ -15,7 +15,7 @@ function Footer({currentUser}) {
                         <span># Become A Instructor</span>
                         <h3>Become a Instructor</h3>
                         
-                        <Link to="/contact" className="thm_btn thm_btn-border">apply now</Link>
+                        <Link to="/contact" className="thm_btn thm_btn-border">Create a Course</Link>
                         
                         <div className="bai_shape">
                             <img src={bai_shape} alt="" />
@@ -28,7 +28,7 @@ function Footer({currentUser}) {
     <footer className="footer_area footer_bg footer_space">
         <div className="container">
             <div className="footer_bottom">
-                <div className="left f-left ul_li">
+                {/* <div className="left f-left ul_li">
                     <div className="logo">
                         <a href="index.html"><img src="assets/img/logo/logo_white.png" alt=""/></a>
                     </div>
@@ -41,7 +41,7 @@ function Footer({currentUser}) {
                   {currentUser == null ? 
                     <a className="thm_btn thm_btn-border" href="account.html">Connexion<i className="fal fa-key"></i></a>
                   : null}
-                </div>
+                </div> */}
             </div>
         </div>
     </footer>

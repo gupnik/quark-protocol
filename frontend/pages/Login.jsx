@@ -8,11 +8,10 @@ import * as actions from "../store/authentication/authentication.actions"
 import CourseBanner from '../components/Marketplace/Course/CourseBanner'
 import FormInput from '../components/Marketplace/Form/FormInput'
 import Button from '../components/Marketplace/Button'
-import { SignInPrompt } from '../ui-components'
 import { useQWallet } from '../hooks/useQWallet'
 
 
-function Login({handleLogin, loading, hasErrors, handleSignUp}) {
+function Login({handleLogin, loading, hasErrors, token,handleSignUp}) {
   const { isSignedIn, wallet } = useQWallet();
 
   const [login, setLogin] = useState({email: "mariusn@gmail.com",password: "passer2019@"})
@@ -22,7 +21,8 @@ function Login({handleLogin, loading, hasErrors, handleSignUp}) {
   function onSubmit(e){
     e.preventDefault()
 
-    handleLogin(login)
+    // handleLogin(login)
+    wallet.signIn();
   };
 
   function handleSubmitSignUp(e){
@@ -34,8 +34,7 @@ function Login({handleLogin, loading, hasErrors, handleSignUp}) {
   if (isSignedIn) return <Redirect to="/" />
   return (
     <LoginPage>
-      <SignInPrompt onClick={() => wallet.signIn()} />;
-      {/* <CourseBanner/>
+      <CourseBanner/>
 
       <section className="account_area pt-120 pb-90 mt-5">
         <div className="container mt-5">
@@ -44,7 +43,7 @@ function Login({handleLogin, loading, hasErrors, handleSignUp}) {
                 <div className="account_wrap">
                   <h3 className="title">Login your Account</h3>
                   <form onSubmit={onSubmit}>
-                    <FormInput
+                    {/* <FormInput
                       name="username"
                       type="text"
                       value={login.email}
@@ -64,19 +63,19 @@ function Login({handleLogin, loading, hasErrors, handleSignUp}) {
                         className="input"
                         error={errors.password}
                         required
-                      />
+                      /> */}
 
                     <Button
                       type="submit"
                       className="button"
-                      text="Submit"
+                      text="Sign In With NEAR Wallet"
                       disabled={loading}
                     />
 
                   </form>
                 </div>
             </div>
-            <div className="col-lg-6">
+            {/* <div className="col-lg-6">
                 <div className="account_wrap">
                   <h3 className="title">Sign up your Account</h3>
                   <form onSubmit={handleSubmitSignUp}>
@@ -121,11 +120,10 @@ function Login({handleLogin, loading, hasErrors, handleSignUp}) {
 
                   </form>
                 </div>
-            </div>
+            </div> */}
           </div>
         </div>
-      </section> */}
-      
+      </section>
     </LoginPage>
   )
 }

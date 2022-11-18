@@ -11,47 +11,39 @@ export function fetchLastCourses() {
         dispatch(getCourses());
 
         try {
-            // const response = await fetch("http://127.0.0.1:8000/api/courses")
-            // const data = await response.json()
-            const data = {
-                courses: [
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
                     {
-                        id: '1',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
+                      courses(first: 5) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
                     },
-                    {
-                        id: '2',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                    {
-                        id: '3',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                ],
-            };
+                })
+            });
+            const data = await response.json()
 
-            dispatch(getCoursesSuccess(data.courses));
+            dispatch(getCoursesSuccess(data.data.courses));
         } catch (error) {
             dispatch(getCoursesFailures());
         }
@@ -61,60 +53,39 @@ export function fetchLastCourses() {
 export function fetchAllCourses() {
     return async (dispatch) => {
         try {
-            // const response = await fetch('http://127.0.0.1:8000/api/courses');
-            // const data = await response.json();
-
-            const data = {
-                courses: [
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
                     {
-                        id: '1',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
+                      courses(first: 5) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
                     },
-                    {
-                        id: '2',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                    {
-                        id: '3',
-                        title: 'Sample',
-                        slug: 'a',
-                        image: '',
-                        level: 1,
-                        views: 100,
-                        follow_courses_count: 0,
-                        notes_count: 10,
-                        total_note: 10,
-                    },
-                ],
-            };
+                })
+            });
+            const data = await response.json()
 
-            // key={course.id}
-            //     title={course.title}
-            //     slug={course.slug}
-            //     banner={course.image}
-            //     level={course.level}
-            //     views={course.views}
-            //     teacher_image={course.teacher_image}
-            //     category_name={course.category_name}
-            //     follow_courses_count={course.follow_courses_count}
-            //     notes_count={course.notes_count}
-            //     total_note={course.total_note}
-
-            dispatch(getCoursesSuccess(data.courses));
+            dispatch(getCoursesSuccess(data.data.courses));
         } catch (error) {
             dispatch(getCoursesFailures());
         }

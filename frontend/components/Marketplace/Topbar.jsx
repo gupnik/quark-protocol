@@ -11,7 +11,9 @@ import CloseIcon from '@mui/icons-material/Close';
 import LogoutIcon from '@mui/icons-material/Logout';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonIcon from '@mui/icons-material/Person';
+import { useQWallet } from '../../hooks/useQWallet';
 function Topbar({user}) {
+  const { isSignedIn, wallet } = useQWallet();
   const [userDropdown, setUserDropdown] = useState(false)
 
 	const toggleUserDropdown = () => {
@@ -43,7 +45,7 @@ function Topbar({user}) {
                     <div className="col-xl-3 col-lg-2 col-6 d-flex justify-content-end">
                         
 
-                        { Object.keys(user).length === 0 ? 
+                        { !isSignedIn ? 
                           <div className="header_right">
                               <div className="account">
                                   <Link to="/login">account</Link>
@@ -59,10 +61,10 @@ function Topbar({user}) {
                         { userDropdown && 
                           <div className="topbar_dropdown">
                            <ul>
-                             <li> {user.name} {user.firstname} </li>
-                             <li> <Link to="/dashboard"><PersonIcon /> Tableau de bord</Link> </li>
-                             <li> <Link to="/settings"><SettingsIcon/> Parametres</Link> </li>
-                             <li> <LogoutIcon/> Se deconnecter</li>
+                             <li> {wallet.accountId} </li>
+                             <li> <Link to="/dashboard"><PersonIcon /> Dashboard</Link> </li>
+                             <li> <Link to="/settings"><SettingsIcon/> Settings</Link> </li>
+                             <li onClick={() => wallet.signOut()}> <LogoutIcon/> Logout</li>
                            </ul>
                           </div>
                         }

@@ -17,7 +17,7 @@ import hero_icon from "../assets/img/hero_icon.png"
 import hero_img from "../assets/img/hero_img.png"
 
 //icon 
-import { ArrowRightAlt as ArrowRightAltIcon } from '@material-ui/icons';
+import ArrowRightAltIcon from '@material-ui/icons/ArrowRightAlt';
 import { useQWallet } from '../hooks/useQWallet'
 
 function Home({
@@ -30,20 +30,7 @@ function Home({
   dispatch
 }) {
 
-  const { helloNEAR, isSignedIn } = useQWallet();
-
-    // Get blockchian state once on component load
-    React.useEffect(() => {
-        helloNEAR && isSignedIn && helloNEAR
-            .getQuestionCount()
-            .then((val) => {
-              console.log(val);
-            });
-            // .catch(alert)
-            // .finally(() => {
-            //     setUiPleaseWait(false);
-            // });
-    }, [helloNEAR, isSignedIn]);
+  const { isSignedIn } = useQWallet();
 
   useEffect(() => {
     dispatch(fetchCategories())
@@ -79,13 +66,13 @@ function Home({
                                   Icon={ArrowRightAltIcon}  />
                               </Link>
 
-                              <Link to="/login">
+                              {!isSignedIn && <Link to="/login">
                                 <Button 
-                                  text="Start trial" 
+                                  text="Login" 
                                   bgColor="#e5175c"
                                   bgColorHover="#0073ff"
                                   Icon={ArrowRightAltIcon} />
-                              </Link>
+                              </Link>}
                               </div>
                           </div>
                       </div>
