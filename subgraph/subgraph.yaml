@@ -8,7 +8,7 @@ dataSources:
       name: receipts
       network: near-testnet
       source:
-          account: 'dev-1668684541823-81680908893316'
+          account: 'dev-1668685358426-93588599283556'
           startBlock: 103435250
       mapping:
           apiVersion: 0.0.6

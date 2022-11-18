@@ -57,10 +57,11 @@ function handleAction(
 
     log.info("Add Chapter: {}", [functionArgs.get("course_id")!.toBigInt().toString(), functionArgs.get("section_id")!.toBigInt().toString()]);
     const course = Course.load(functionArgs.get("course_id")!.toBigInt().toString());
-    const section = Section.load(functionArgs.get("section_id")!.toBigInt().toString());
+    const section = Section.load(course!.id + functionArgs.get("section_id")!.toBigInt().toString());
     const chapter = new Chapter(course!.id + section!.id + functionArgs.get("chapter_id")!.toBigInt().toString());
     chapter.section = section!.id;
     chapter.chapter_title = functionArgs.get("chapter_title")!.toString();
+    chapter.chapter_text_content = functionArgs.get("chapter_text_content")!.toString();
     chapter.save();
   } else if (functionCall.methodName == "ask") {
     let user = User.load(receipt.signerId);

@@ -13,84 +13,89 @@ export function fetchCourses() {
         dispatch(getCourses());
 
         try {
-            // const response = await fetch("http://127.0.0.1:8000/api/admin/courses")
-            // const data = await response.json()
-
-            const data = {
-                courses: [
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
                     {
-                        title: 'Course 1',
-                        created_at: '20220101',
-                        id: 1,
-                        image: '',
-                        sections: [
-                            {
-                                title: 'Section 1',
-                                chapters: [
-                                    {
-                                        chapter_title: 'Chapter 1',
-                                    },
-                                ],
-                            },
-                        ],
-                        chapters: [
-                            {
-                                chapter_title: 'Chapter 1',
-                            },
-                        ],
+                      courses(first: 5) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
                     },
-                ],
-            };
+                })
+            });
+            const data = await response.json()
 
-            dispatch(getCoursesSuccess(data.courses));
+            dispatch(getCoursesSuccess(data.data.courses));
         } catch (error) {
+            console.log(error);
             dispatch(getCoursesFailure());
         }
     };
 }
 
-export function fetchTeacherCourses(id, helloNEAR) {
+export function fetchTeacherCourses(id) {
     return async (dispatch) => {
         dispatch(getCourses());
 
         try {
-            const courseCount = await helloNEAR.getCourseCount();
-            console.log(courseCount)
-
-            // const response = await fetch(`http://127.0.0.1:8000/api/teacher/${id}/courses`);
-            // const data = await response.json();
-
-            const data = {
-                courses: [
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
                     {
-                        title: 'Course 1',
-                        created_at: '20220101',
-                        chapter_count: 1,
-                        category_name: 'test',
-                        status: 'active',
-                        id: 1,
-                        image: '',
-                        sections: [
-                            {
-                                title: 'Section 1',
-                                chapters: [
-                                    {
-                                        chapter_title: 'Chapter 1',
-                                    },
-                                ],
-                            },
-                        ],
-                        chapters: [
-                            {
-                                chapter_title: 'Chapter 1',
-                            },
-                        ],
+                        user(id: \"${id}\") {
+                            id
+                            created_courses {
+                                id
+                                title
+                                image
+                                price
+                                sections {
+                                    id
+                                    section_title
+                                        chapters {
+                                            id
+                                            chapter_title
+                                            chapter_text_content
+                                        }
+                                }
+                            }
+                        }
+                    }
+                    `,
+                    variables: {
+                        
                     },
-                ],
-            };
+                })
+            });
+            const data = await response.json()
 
-            dispatch(getCoursesSuccess(data.courses));
+            dispatch(getCoursesSuccess(data.data.user.created_courses));
         } catch (error) {
+            console.log(error)
             dispatch(getCoursesFailure());
         }
     };

@@ -26,6 +26,7 @@ type Section @entity {
 type Chapter @entity {
     id: ID!
     chapter_title: String!
+    chapter_text_content: String!
     section: Section!
 }
 

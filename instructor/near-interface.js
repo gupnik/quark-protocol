@@ -17,88 +17,50 @@ export class HelloNEAR {
 
     async createCourse(course) {
         const courseCount = await this.getCourseCount();
+        console.log(courseCount);
 
-        // console.log([
-        //     {
-        //         type: 'FunctionCall',
-        //         params: {
-        //             methodName: 'create_course',
-        //             args: { course_id: courseCount+1, title: course.title, image: course.image, price: 0 },
-        //             gas: THIRTY_TGAS,
-        //             deposit: NO_DEPOSIT,
-        //         },
-        //     },
-        //     ...course.sections.map((s, indx) => {
-        //         return {
-        //             type: 'FunctionCall',
-        //             params: {
-        //                 methodName: 'add_section',
-        //                 args: { course_id: courseCount+1, section_id: indx+1, section_title: s.section_title},
-        //                 gas: THIRTY_TGAS,
-        //                 deposit: NO_DEPOSIT,
-        //             },
-        //         }
-        //     }),
-        //     ...course.sections.map((s, indx) => [
-        //         ...s.chapters.map((c, cindx) => {
-        //             return {
-        //                 type: 'FunctionCall',
-        //                 params: {
-        //                     methodName: 'add_chapter',
-        //                     args: { course_id: courseCount+1, section_id: indx+1, chapter_id: cindx+1, chapter_title: c.chapter_title,  
-        //                         chapter_text_content: c.chapter_text_content,
-        //                         chapter_video_content: c.chapter_video_content,
-        //                     },
-        //                     gas: THIRTY_TGAS,
-        //                     deposit: NO_DEPOSIT,
-        //                 },
-        //             }
-        //         })
-        //     ]),
-        // ]);
-
-        // return await this.wallet.wallet.signAndSendTransaction({
-        //     signerId: this.accountId,
-        //     receiverId: this.contractId,
-        //     actions: [
-        //         {
-        //             type: 'FunctionCall',
-        //             params: {
-        //                 methodName: 'create_course',
-        //                 args: { course_id: courseCount+1, title: course.title, image: course.image, price: 0 },
-        //                 gas: THIRTY_TGAS,
-        //                 deposit: NO_DEPOSIT,
-        //             },
-        //         },
-        //         ...course.sections.map((s, indx) => {
-        //             return {
-        //                 type: 'FunctionCall',
-        //                 params: {
-        //                     methodName: 'add_section',
-        //                     args: { course_id: courseCount+1, section_id: indx+1, section_title: s.section_title},
-        //                     gas: THIRTY_TGAS,
-        //                     deposit: NO_DEPOSIT,
-        //                 },
-        //             }
-        //         }),
-        //         ...course.sections.map((s, indx) => [
-        //             ...s.chapters.map((c, cindx) => {
-        //                 return {
-        //                     type: 'FunctionCall',
-        //                     params: {
-        //                         methodName: 'add_chapter',
-        //                         args: { course_id: courseCount+1, section_id: indx+1, chapter_id: cindx+1, chapter_title: c.chapter_title,  
-        //                             chapter_text_content: c.chapter_text_content,
-        //                             chapter_video_content: c.chapter_video_content,
-        //                         },
-        //                         gas: THIRTY_TGAS,
-        //                         deposit: NO_DEPOSIT,
-        //                     },
-        //                 }
-        //             })
-        //         ]),
-        //     ],
-        // });
+        return await this.wallet.wallet.signAndSendTransaction({
+            signerId: this.accountId,
+            receiverId: this.contractId,
+            actions: [
+                {
+                    type: 'FunctionCall',
+                    params: {
+                        methodName: 'create_course',
+                        args: { course_id: courseCount+1, title: course.title, image: course.image, price: 0 },
+                        gas: THIRTY_TGAS,
+                        deposit: NO_DEPOSIT,
+                    },
+                },
+                ...course.sections.map((s, indx) => {
+                    return {
+                        type: 'FunctionCall',
+                        params: {
+                            methodName: 'add_section',
+                            args: { course_id: courseCount+1, section_id: indx+1, section_title: s.section_title},
+                            gas: THIRTY_TGAS,
+                            deposit: NO_DEPOSIT,
+                        },
+                    }
+                }),
+                ...course.sections.flatMap((s, indx) => [
+                    ...s.chapters.map((c, cindx) => {
+                        return {
+                            type: 'FunctionCall',
+                            params: {
+                                methodName: 'add_chapter',
+                                args: { course_id: courseCount+1, section_id: indx+1, chapter_id: cindx+1, chapter_title: c.chapter_title,  
+                                    chapter_text_content: c.chapter_text_content,
+                                    chapter_video_content: c.chapter_video_content,
+                                },
+                                gas: THIRTY_TGAS,
+                                deposit: NO_DEPOSIT,
+                            },
+                        }
+                    })
+                ]),
+            ],
+        });
     }
 
     async getQuestionCount() {

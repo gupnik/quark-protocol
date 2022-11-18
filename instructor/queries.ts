@@ -18,3 +18,23 @@ export const questionsQuery = gql`
     }
 }
 `
+
+export const coursesQuery = gql`
+{
+  courses(first: 5) {
+    id
+    title
+    image
+    price
+    sections {
+      id
+      section_title
+      chapters {
+        id
+        chapter_title
+        chapter_text_content
+      }
+    }
+  }
+}
+`

@@ -14,7 +14,7 @@ import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import { useQWallet } from '../../hooks/useQWallet';
 function Courses({user, dispatch,courses}) {
-  const { helloNEAR, isSignedIn } = useQWallet();
+  const { wallet } = useQWallet();
 
   const [course, setCourse] = useState({id: null, title: ""})
   const { isShowing: isDeleteModalShowed, toggle: toggleDeleteModal } = useModal();
@@ -31,10 +31,11 @@ function Courses({user, dispatch,courses}) {
 
   useEffect(() => {
     if(user.profil_id == 1){
-      dispatch(actions.fetchCourses(helloNEAR))
+      dispatch(actions.fetchCourses());
     }else{
-      dispatch(actions.fetchTeacherCourses(user.id, helloNEAR))
+      dispatch(actions.fetchTeacherCourses(wallet.accountId));
     }
+
   }, [dispatch])
   return (
     <div className="wrap-content">
@@ -60,10 +61,10 @@ function Courses({user, dispatch,courses}) {
             <th className="text-center" scope="col">Item No.</th>
             <th className="text-center" scope="col">Title</th>
             {user.profil_id == 1 ? <th className="text-center" scope="col">Instructor</th> : ''}
-            <th className="text-center" scope="col">Publish date</th>
-            <th className="text-center" scope="col">Training(s)</th>
+            {/* <th className="text-center" scope="col">Publish date</th> */}
+            <th className="text-center" scope="col">Subscriber(s)</th>
             <th className="text-center" scope="col">Category</th>
-            <th className="text-center" scope="col">Chapters</th>
+            <th className="text-center" scope="col">Sections</th>
             <th className="text-center" scope="col">Status</th>
             <th className="text-center" scope="col">Actions</th>
           </tr>
@@ -74,13 +75,13 @@ function Courses({user, dispatch,courses}) {
               <td className="text-center">{ course.id}</td>
               <td className="text-center">{ course.title}</td>
               { user.profil_id == 1 ? <td className="text-center">{ course.user_name} { course.user_firstname}</td> : ''}
-              <td className="text-center">{ course.created_at.substr(0,10)}</td>
+              {/* <td className="text-center">{ course.created_at.substr(0,10)}</td> */}
               <td className="text-center">{ course.follow_courses_count}</td>
               <td className="text-center">  { course.category_name}</td>
-              <td className="text-center">  { course.chapter_count}</td>
+              <td className="text-center">  { course.sections.length}</td>
               <td className="text-center"> <b className="course_active">{ course.status}</b> </td>
               <td className="text-center">
-                {user.profil_id == 1 ? '': <Link to={`/edit-course/${course.slug}`}> <EditOutlinedIcon className="uil text-black" /></Link>}
+                {user.profil_id == 1 ? '': <Link to={`/edit-course/${course.id}`}> <EditOutlinedIcon className="uil text-black" /></Link>}
                 {course.follow_courses_count > 0 ? '' :  <DeleteOutlineOutlinedIcon onClick={() => deleteAction(course)} className="uil"/>}
               </td>
             </tr>
