@@ -13,7 +13,7 @@ import { Redirect } from 'react-router';
 import Button from '../components/common/Button';
 import FormInput from '../components/form/FormInput';
 
-import logo from "../assets/img/logo.svg"
+import logo from "../assets/img/logo.png"
 import { useQWallet } from '../hooks/useQWallet'
 
 function SignIn({login, loading, hasErrors, token}) {
@@ -35,7 +35,7 @@ function SignIn({login, loading, hasErrors, token}) {
     <div className="sign_in_up_bg">
 		<div className="container">
 			<div className="row justify-content-lg-center justify-content-md-center">
-				<div className="col-lg-12">
+				<div>
 					<div className="main_logo25" id="logo">
 						<a href="index.html"> <img src={logo} alt="" /></a>
 						<a href="index.html"></a>

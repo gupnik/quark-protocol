@@ -166,7 +166,7 @@ blockquote {
 
 .main_logo25 {
   float: none;
-  width: 135px;
+  /* width: 135px; */
   text-align: center;
   margin: auto !important;
 padding: 50px 0;
