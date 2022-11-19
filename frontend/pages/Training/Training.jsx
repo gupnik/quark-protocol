@@ -5,6 +5,7 @@ import { fetchTrainingState, fetchChapter, validateChapter, unValidateChapter } 
 import DoneIcon from '@mui/icons-material/Done';
 import Button from "../../components/Marketplace/Button";
 import DOMPurify from 'dompurify';
+import { useQWallet } from '../../hooks/useQWallet';
 
 function Training({
     currentUser,
@@ -14,27 +15,28 @@ function Training({
     currentChapter,
     currentChapterProgress,}) {
   
+      const { wallet } = useQWallet();
   const [currentChapterId, setCurrentChapterId] = useState(0)
   
   useEffect(() => {
     const { slug } = match.params
-    dispatch(fetchTrainingState(slug,currentUser.id))
+    dispatch(fetchTrainingState(slug,wallet.accountId))
   }, [dispatch, match])
 
   useEffect(() => {
     const { slug } = match.params
-    dispatch(fetchChapter(currentChapterId,slug,currentUser.id))
+    dispatch(fetchChapter(currentChapterId,slug,wallet.accountId))
   }, [currentChapterId])
 
   const vChapter =  chapter => {
     const { slug } = match.params
-    dispatch(validateChapter(slug,chapter,currentUser.id))
+    dispatch(validateChapter(slug,chapter,wallet.accountId))
     window.scrollTo(0, 0);
   }
 
   const unChapter = chapter => {
     const { slug } = match.params
-    dispatch(unValidateChapter(slug,chapter,currentUser.id))
+    dispatch(unValidateChapter(slug,chapter,wallet.accountId))
     window.scrollTo(0, 0);
   }
   const createMarkup = (html) => {
@@ -42,6 +44,8 @@ function Training({
       __html: DOMPurify.sanitize(html)
     }
   }
+
+  console.log('tr', trainingProgress, currentChapter, currentChapterProgress);
 
   return (
     <div style={{paddingTop: '120px'}} className="border border-danger formation_wrapper">
@@ -52,7 +56,7 @@ function Training({
               {tr.chapters.map(chapter => (
                 <span onClick={() => setCurrentChapterId(chapter.id)} className={`timeline__step ${chapter.is_valide}`} key={chapter.id}>
                   <span className="timeline__stepName">{chapter.chapter_title}</span>
-                  { currentChapter.id == chapter.id ? <span className="timeline__progressMarker"></span> : '' }
+                  { currentChapter && currentChapter.id == chapter.id ? <span className="timeline__progressMarker"></span> : '' }
                 </span>
               ))}
               <span className="timeline__splitChapter"></span>
@@ -65,13 +69,13 @@ function Training({
 
             <div className="ov_text_wrap m-4">
               <div className="ov_text">
-                  <p dangerouslySetInnerHTML={createMarkup(currentChapter.textContent)}></p>
+                  <p dangerouslySetInnerHTML={currentChapter && createMarkup(currentChapter.chapter_text_content)}></p>
               </div>
             </div>
               <div className="d-flex align-items-center justify-content-center" style={{marginTop: '60px'}}>
                 { currentChapterProgress == null ? 
-                   <Button handleClick={() => vChapter(currentChapter.id)} text=" J AI TERMINER CE CHAPITRE JE PASSE AU SUIVANT "/> : 
-                   <Button handleClick={() => unChapter(currentChapter.id)} text=" INDIQUER QUE CE CHAPITRE N EST PAS TERMINER "/>
+                   <Button handleClick={() => vChapter(currentChapter.id)} text=" NEXT CHAPTER "/> : 
+                   <Button handleClick={() => unChapter(currentChapter.id)} text=" REVISIT CHAPTER "/>
                 }
               </div>
           </div>
@@ -81,7 +85,7 @@ function Training({
               {trainingProgress.map(tr => (
                 <span key={tr.section_id}>
                   {tr.chapters.map(chapter => (
-                    chapter.id == currentChapter.id ? 
+                    currentChapter && chapter.id == currentChapter.id ? 
                     <div className="recap_content">
                       <div className="recap_header">
                         {tr.section_title}

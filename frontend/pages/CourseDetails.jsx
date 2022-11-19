@@ -35,18 +35,25 @@ function CourseDetails({
   currentUser,
   currentTraining
 }) {
-  const { isSignedIn } = useQWallet();
+  const { isSignedIn, helloNEAR, wallet } = useQWallet();
+
+  const subscribeCourse = async () => {
+    await helloNEAR.subscribeCourse(course.id);
+  };
 
   const renderTrainingButton = () => {
     const { slug } = match.params
     if (!isSignedIn || currentTraining == false){
       return (
-         <Link to={`/training/${slug}`}>
+        //  <Link to={`/training/${slug}`}>
             <Button 
-            text="Subscribe"
-            bgColorHover="#0073ff"
-            Icon={ArrowRightAltIcon} />
-         </Link>
+              handleClick={subscribeCourse}
+              text="Subscribe"
+              bgColorHover="#0073ff"
+              disabled={false}
+              Icon={ArrowRightAltIcon} 
+              />
+        //  </Link>
       )
     }else{
       return (
@@ -57,7 +64,7 @@ function CourseDetails({
             bgColorHover="#0073ff"
             Icon={ArrowRightAltIcon} />
           </Link>
-          <span className="mt-3 cancel-formation" onClick={() => dispatch(cancelCurrentTraining(currentTraining.id))}>NE PLUS SUIVRE</span>
+          {/* <span className="mt-3 cancel-formation" onClick={() => dispatch(cancelCurrentTraining(currentTraining.id))}>NE PLUS SUIVRE</span> */}
         </div>
         )
     }
@@ -74,7 +81,7 @@ function CourseDetails({
     dispatch(fetchUser(course.teacher_id))
     dispatch(fetchCourseReviews(course.id))
     dispatch(fetchCourseCurriculum(course.id))
-    dispatch(trainingIsExist(course.id,currentUser.id))
+    dispatch(trainingIsExist(course.id,wallet.accountId))
   }, [course])
 
   useEffect(() => {

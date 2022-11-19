@@ -14,10 +14,43 @@ export const cancelTraining = () => ({type: CANCEL_FORMATION})
 export function trainingIsExist(course,student){
   return async dispatch => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student/${student}/training/${course}`)
-      const data = await response.json()
+      const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            query: `
+            {
+                user(id: \"${student}\") {
+                    id
+                    subscribed_courses {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                            id
+                            section_title
+                                chapters {
+                                    id
+                                    chapter_title
+                                    chapter_text_content
+                                }
+                        }
+                    }
+                }
+            }
+            `,
+            variables: {
+                
+            },
+        })
+    });
+    const data = await response.json();
+    console.log('f', course, data, data.data.user.subscribed_courses.some((c) => c.id == course));
 
-      dispatch(checkIfTrainingExit(parseTrainingObjet(data)))
+      dispatch(checkIfTrainingExit(data.data.user.subscribed_courses.some((c) => c.id == course)))
     } catch (error) {
       
     }
@@ -51,13 +84,44 @@ export function fetchTrainingState(slug,student){
   return async dispatch => {
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/training/${slug}/student/${student}`)
-      const data = await response.json()
+      const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
+                    {
+                      course(id: ${slug}) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
+                    },
+                })
+            });
+            const data = await response.json()
 
-      const trainings = parseTrainingState(data);
+      const trainings = data.data.course.sections; //parseTrainingState(data);
+      console.log(slug, data, trainings);
 
       dispatch(getFormationSuccess(trainings));
-      dispatch(fetchChapter(findCurrentChapter(trainings), slug, student));
+      // dispatch(fetchChapter(findCurrentChapter(trainings), slug, student));
+      dispatch(fetchChapter(0, slug, student));
     } catch (error) {
       
     }
@@ -67,11 +131,40 @@ export function fetchTrainingState(slug,student){
 export function fetchChapter(chapter,slug,student){
   return async dispatch => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/chapter/${chapter}/${slug}/${student}`)
-      const data = await response.json()
+      const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
+                    {
+                      course(id: ${slug}) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
+                    },
+                })
+            });
+            const data = await response.json()
 
-      console.log(data.content.title);
-      dispatch(getChapterSuccess(data))
+      console.log('c', chapter,  data.data.course.sections, data.data.course.sections[0].chapters[0]);
+      dispatch(getChapterSuccess({content: data.data.course.sections[0].chapters[0], training: null}))
     } catch (error) {
       
     }

@@ -14,6 +14,7 @@ type Course @entity {
     creator: User!
     sections: [Section!] @derivedFrom(field: "course")
     subscribers: [User!]
+    subscriber_count: BigInt!
 }
 
 type Section @entity {

@@ -26,6 +26,7 @@ export function fetchCourses() {
                         title
                         image
                         price
+                        subscriber_count
                         sections {
                           id
                           section_title
@@ -73,6 +74,7 @@ export function fetchTeacherCourses(id) {
                                 title
                                 image
                                 price
+                                subscriber_count
                                 sections {
                                     id
                                     section_title

@@ -8,7 +8,7 @@ import Button from '../common/Button';
 
 //images 
 import user_profil from "../../assets/img/user_profil.jpg";
-import logo from "../../assets/img/logo.svg"
+import logo from "../../assets/img/logo.png"
 
 //icon 
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined';
@@ -39,8 +39,8 @@ function TopBar({user}) {
 		<button id="collapse_menu" className="collapse_menu d-flex align-items-center justify-content-center">
 		 	<MenuOutlinedIcon />
 		</button>
-		<div className="main_logo" id="logo">
-			<a href="index.html"> <img src={logo} alt="logo" /> </a>
+		<div className="main_logo" id="logo" >
+			<a href="index.html"> <img style={{ height: "60px"}} src={logo} alt="logo" /> </a>
 			<a href="index.html"></a>
     </div>
 		<div className="top-category" style={{marginLeft: '16px'}}>
@@ -64,7 +64,7 @@ function TopBar({user}) {
 					{user.profil_id == 1 ? '' : <Link to="/new-course"> <Button text="Create New Course" /> </Link>  }
 				
 				</li>
-				<li>
+				{/* <li>
 					<a href="shopping_cart.html" className="option_links" title="cart"><ShoppingCartOutlinedIcon /><span className="noti_count">2</span></a>
 				</li>
 				<li className="ui dropdown">
@@ -74,7 +74,7 @@ function TopBar({user}) {
 				<li className="ui dropdown">
 					<a href="#" className="option_links" title="Notifications"><NotificationsActiveOutlinedIcon /> <span className="noti_count">3</span></a>
 					 
-				</li>
+				</li> */}
 				<li className="ui dropdown">
 					<a href="#" className="opts_account" title="Account" onClick={toggleUserDropdown}>
 					{ user.avatar == null ? <img src={user_profil} alt="user_profil" /> : <img src={user.avatar} alt="user_profil" />  }
@@ -105,7 +105,7 @@ function TopBar({user}) {
 								</span>
 							</a>
 						</div>
-						<a href="instructor_dashboard.html" className="item channel_item">Cursus dashboard</a>						
+						<a href="instructor_dashboard.html" className="item channel_item">Dashboard</a>						
 						
 						<button className="item channel_item col-md-12 bg-white" onClick={() => onLogout()}>Sign Out</button>
 					</div>

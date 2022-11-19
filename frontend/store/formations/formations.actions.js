@@ -13,18 +13,42 @@ export function fetchTrainings(id) {
         dispatch(getTrainings());
 
         try {
-            // const response = await fetch(`http://127.0.0.1:8000/api/student/trainings/${id}`)
-            // const data = await response.json()
-
-            const data = [
-                {
-                    course_title: "First",
-                    course_slug: '1',
-                    inscription_date: '12022022',
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            ];
+                body: JSON.stringify({
+                    query: `
+                    {
+                        user(id: \"${id}\") {
+                            id
+                            subscribed_courses {
+                                id
+                                title
+                                image
+                                price
+                                sections {
+                                    id
+                                    section_title
+                                        chapters {
+                                            id
+                                            chapter_title
+                                            chapter_text_content
+                                        }
+                                }
+                            }
+                        }
+                    }
+                    `,
+                    variables: {
+                        
+                    },
+                })
+            });
+            const data = await response.json()
 
-            dispatch(getTrainingsSuccess(data));
+            dispatch(getTrainingsSuccess(data.data.user));
         } catch (error) {
             dispatch(getTrainingsFailures());
         }

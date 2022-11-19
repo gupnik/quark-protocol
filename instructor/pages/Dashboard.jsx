@@ -10,17 +10,21 @@ import Button from "../components/common/Button"
 //icons
 import LibraryBooksOutlinedIcon from '@material-ui/icons/LibraryBooksOutlined';
 import DashboardOutlinedIcon from '@material-ui/icons/DashboardOutlined';
+import { useQWallet } from '../hooks/useQWallet'
 function Dashboard({user, dispatch, data}) {
+  const { wallet } = useQWallet();
   
   useEffect(() => {
     
     if(user.profil_id == 1){
       dispatch(actions.getAdminStat())
     }else{
-      dispatch(actions.getInstructorStat(user.id))
+      dispatch(actions.getInstructorStat(wallet.accountId))
     }
     
   }, [dispatch])
+
+  console.log(data);
   return (
     <div className="wrap-content">
       <div className="container-fluid">

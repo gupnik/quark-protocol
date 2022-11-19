@@ -44,7 +44,7 @@ const CourseMedia = ({
                   <input className="uploadBtn-main-input" type="file" id="ThumbFile__input" onChange={(e) => setCourseImage(e.target.files[0])} />
                   <label  title="Zip" htmlFor="ThumbFile__input">Choose Thumbnail</label>
                 </div>
-                <span className="uploadBtn-main-file mb-4">Taille: 590x300 pixels. Supports: jpg,jpeg, ou png</span>
+                <span className="uploadBtn-main-file mb-4">Taille: 590x300 pixels. Supports: jpg,jpeg,png</span>
               </div>
             </div>
           </div>
