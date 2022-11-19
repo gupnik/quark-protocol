@@ -11,11 +11,49 @@ export function getInstructorStat(id) {
         try {
             dispatch(getStat());
 
-            // const response = await fetch(`http://127.0.0.1:8000/api/users/instructor/dashboard/${id}`)
-            // const data = await response.json()
-            const data = {};
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
+                    {
+                        user(id: \"${id}\") {
+                            id
+                            created_courses {
+                                id
+                                title
+                                image
+                                price
+                                subscriber_count
+                                sections {
+                                    id
+                                    section_title
+                                        chapters {
+                                            id
+                                            chapter_title
+                                            chapter_text_content
+                                        }
+                                }
+                            }
+                        }
+                    }
+                    `,
+                    variables: {
+                        
+                    },
+                })
+            });
+            const data = await response.json()
+            console.log(data.data.user.created_courses.length)
 
-            dispatch(getStatSuccess(data));
+            let students = 0;
+            for (c of data.data.user.created_courses) {
+                students += parseInt(c.subscriber_count);
+            }
+
+            dispatch(getStatSuccess({ courses: data.data.user.created_courses.length, students}));
         } catch (error) {
             dispatch(getStatFailures());
         }
@@ -27,11 +65,43 @@ export function getAdminStat() {
         try {
             dispatch(getStat());
 
-            // const response = await fetch(`http://127.0.0.1:8000/api/users/admin/dashboard`);
-            // const data = await response.json();
-            const data = {};
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: `
+                    {
+                        user(id: \"${id}\") {
+                            id
+                            created_courses {
+                                id
+                                title
+                                image
+                                price
+                                subscriber_count
+                                sections {
+                                    id
+                                    section_title
+                                        chapters {
+                                            id
+                                            chapter_title
+                                            chapter_text_content
+                                        }
+                                }
+                            }
+                        }
+                    }
+                    `,
+                    variables: {
+                        
+                    },
+                })
+            });
+            const data = await response.json()
 
-            dispatch(getStatSuccess(data));
+            dispatch(getStatSuccess({ courses: data.data.user.created_courses.length }));
         } catch (error) {
             dispatch(getStatFailures());
         }

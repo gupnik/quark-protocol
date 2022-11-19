@@ -63,9 +63,9 @@ function Courses({user, dispatch,courses}) {
             {user.profil_id == 1 ? <th className="text-center" scope="col">Instructor</th> : ''}
             {/* <th className="text-center" scope="col">Publish date</th> */}
             <th className="text-center" scope="col">Subscriber(s)</th>
-            <th className="text-center" scope="col">Category</th>
+            {/* <th className="text-center" scope="col">Category</th> */}
             <th className="text-center" scope="col">Sections</th>
-            <th className="text-center" scope="col">Status</th>
+            {/* <th className="text-center" scope="col">Status</th> */}
             <th className="text-center" scope="col">Actions</th>
           </tr>
         </thead>
@@ -76,13 +76,13 @@ function Courses({user, dispatch,courses}) {
               <td className="text-center">{ course.title}</td>
               { user.profil_id == 1 ? <td className="text-center">{ course.user_name} { course.user_firstname}</td> : ''}
               {/* <td className="text-center">{ course.created_at.substr(0,10)}</td> */}
-              <td className="text-center">{ course.follow_courses_count}</td>
-              <td className="text-center">  { course.category_name}</td>
+              <td className="text-center">{ course.subscriber_count}</td>
+              {/* <td className="text-center">  { course.category_name}</td> */}
               <td className="text-center">  { course.sections.length}</td>
-              <td className="text-center"> <b className="course_active">{ course.status}</b> </td>
+              {/* <td className="text-center"> <b className="course_active">{ course.status}</b> </td> */}
               <td className="text-center">
                 {user.profil_id == 1 ? '': <Link to={`/edit-course/${course.id}`}> <EditOutlinedIcon className="uil text-black" /></Link>}
-                {course.follow_courses_count > 0 ? '' :  <DeleteOutlineOutlinedIcon onClick={() => deleteAction(course)} className="uil"/>}
+                {course.subscriber_count > 0 ? '' :  <DeleteOutlineOutlinedIcon onClick={() => deleteAction(course)} className="uil"/>}
               </td>
             </tr>
           ))}

@@ -34,6 +34,8 @@ function handleAction(
     course.title = functionArgs.get("title")!.toString();
     course.image = functionArgs.get("image")!.toString();
     course.price = BigInt.fromU64(functionArgs.get("price")!.toU64());
+    course.subscribers = [];
+    course.subscriber_count = BigInt.zero();
     course.save();
   } else if (functionCall.methodName == "add_section") {
     let user = User.load(receipt.signerId);
@@ -63,6 +65,20 @@ function handleAction(
     chapter.chapter_title = functionArgs.get("chapter_title")!.toString();
     chapter.chapter_text_content = functionArgs.get("chapter_text_content")!.toString();
     chapter.save();
+  } else if (functionCall.methodName == "subscribe_course") {
+    let user = User.load(receipt.signerId);
+    if (user == null) {
+        user = new User(receipt.signerId);
+        user.save();
+    }
+
+    log.info("Subscribe course: {}", [functionArgs.get("course_id")!.toBigInt().toString()]);
+    const course = Course.load(functionArgs.get("course_id")!.toBigInt().toString());
+    if (!course!.subscribers!.includes(user.id)) {
+      course!.subscribers = course!.subscribers!.concat([user.id]);
+      course!.subscriber_count = course!.subscriber_count.plus(BigInt.fromU64(1));
+    }
+    course!.save();
   } else if (functionCall.methodName == "ask") {
     let user = User.load(receipt.signerId);
     if (user == null) {

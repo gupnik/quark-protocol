@@ -10,24 +10,40 @@ export function fetchCourse(id) {
     return async (dispatch) => {
         dispatch(getCourse());
         try {
-            // const response = await fetch(`http://127.0.0.1:8000/api/courses/${id}`)
-            // const data = await response.json()
-            const data = {
-                course: {
-                    id: '1',
-                    title: 'Sample',
-                    slug: 'a',
-                    image: '',
-                    level: 1,
-                    views: 100,
-                    follow_courses_count: 0,
-                    notes_count: 10,
-                    total_note: 10,
-                    chapters: [],
+            const response = await fetch('https://api.thegraph.com/subgraphs/name/gupnik/ama-near', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
                 },
-            };
+                body: JSON.stringify({
+                    query: `
+                    {
+                      course(id: ${id}) {
+                        id
+                        title
+                        image
+                        price
+                        sections {
+                          id
+                          section_title
+                          chapters {
+                            id
+                            chapter_title
+                            chapter_text_content
+                          }
+                        }
+                      }
+                    }
+                    `,
+                    variables: {
+                        
+                    },
+                })
+            });
+            const data = await response.json()
+            console.log(data);
 
-            dispatch(getCourseSuccess(data.course));
+            dispatch(getCourseSuccess(data.data.course));
         } catch (error) {
             dispatch(getCourseFailures());
         }

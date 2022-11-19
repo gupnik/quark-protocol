@@ -15,7 +15,7 @@ function Footer({currentUser}) {
                         <span># Become A Instructor</span>
                         <h3>Become a Instructor</h3>
                         
-                        <Link to="/contact" className="thm_btn thm_btn-border">Create a Course</Link>
+                        <Link to="https://quarkprotocol-instructor.neoquest.xyz" className="thm_btn thm_btn-border">Create a Course</Link>
                         
                         <div className="bai_shape">
                             <img src={bai_shape} alt="" />

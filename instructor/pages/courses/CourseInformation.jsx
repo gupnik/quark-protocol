@@ -112,7 +112,7 @@ const CourseInformation = ({
                 <FormSelect
                   name="niveau"
                   label="Level" 
-                  options={niveaux}
+                  options={levels}
                   value={course.level}
                   onChange={(e) => handleChange({...course, level: e.target.value})}
                 />
@@ -140,19 +140,15 @@ const mapStateToProps = state => {
   }
 }
 
-const niveaux = [
+const levels = [
   {
     id: 1,
-    name: "Debutant"
+    name: "Beginner"
   },
   {
     id: 2,
-    name: "Moyen"
+    name: "Advanced"
   },
-  {
-    id: 3,
-    name: "Difficile"
-  }
 ]
 
 export default connect(mapStateToProps)(CourseInformation)

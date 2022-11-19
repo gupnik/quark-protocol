@@ -28,12 +28,12 @@ function CourseCard({
     <CourseComponent>
       <div className="course_single mb-30">
           <div className="c_thumb">
-            {banner == null ? <img src={img_01} alt=""/> : <img src={banner} alt=""/>}
+            {banner == null || banner.startsWith("http://localhost") ? <img src={img_01} alt=""/> : <img src={banner} alt=""/>}
           </div>
           <div className="course_content">
               <div className="c_head">
-                  <span className="cat">{category_name}</span>
-                  <span className="price">{level}</span>
+                  <span className="cat">{category_name || "Software"}</span>
+                  <span className="price">{level || "Beginner"}</span>
               </div>
               <div style={{minHeight: '100px'}}>
                 <h3 className="title" >
@@ -43,7 +43,7 @@ function CourseCard({
                 </h3>
               </div>
               <div className="rating_wrap ul_li d-flex">
-                  <span>13 votes</span>
+                  <span>10 votes</span>
                   <ul className="rating_star ul_li d-flex">
                       <li><StarIcon /></li>
                       <li><StarIcon /></li>
@@ -56,8 +56,8 @@ function CourseCard({
                 className="c_bottom ul_li d-flex mt-2" 
                 style={{paddingLeft: '30px'}}>
                   <div className="d-flex">
-                    <li className="d-flex"> <PeopleIcon />  {follow_courses_count}</li>
-                    <li className="d-flex"> <VisibilityIcon /> {views}</li>
+                    <li className="d-flex"> <PeopleIcon />  {follow_courses_count || 20}</li>
+                    <li className="d-flex"> <VisibilityIcon /> {views || 100}</li>
                     </div>
                   <li>
                       <div className="author">
