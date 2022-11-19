@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import bai_shape from "../../assets/img/bai_shape_01.png"
 import PropTypes from "prop-types"
 import { Link } from 'react-router-dom'
+import Button from './Button'
 function Footer({currentUser}) {
   return (
     <div style={{background: '#F7F7F7'}}>
@@ -15,7 +16,7 @@ function Footer({currentUser}) {
                         <span># Become A Instructor</span>
                         <h3>Become a Instructor</h3>
                         
-                        <Link to="https://quarkprotocol-instructor.neoquest.xyz" className="thm_btn thm_btn-border">Create a Course</Link>
+                        <Button handleClick={() => window.open("https://quarkprotocol-instructor.neoquest.xyz")} className="thm_btn thm_btn-border" text={"Create a Course"}></Button>
                         
                         <div className="bai_shape">
                             <img src={bai_shape} alt="" />
