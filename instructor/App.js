@@ -35,9 +35,7 @@ export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, 
                         <PublicRoute path="/categories" component={Categories} exact />
                         <PublicRoute path="/users" component={Users} exact />
                         <PublicRoute path="/reviews" component={Reviews} exact />
-                        <PublicRoute path="/new-course" component={NewCourse} exact />
-                        <PublicRoute path="/new-course?*" component={NewCourse} exact />
-                        <PublicRoute path="/new-course/*" component={NewCourse} exact />
+                        <PublicRoute path="/new-course" component={NewCourse} />
                         <PublicRoute path="/courses" component={Courses} exact />
                         <PublicRoute path="/settings" component={Settings} exact />
                         <PublicRoute path="/applications" component={Applications} exact />
@@ -47,7 +45,7 @@ export default function App({ isSignedIn, helloNEAR, wallet, web3StorageClient, 
                 </Router>
             ) :
                 <Router>
-                    <PublicRoute path="/" component={SignIn}/>
+                    <PublicRoute component={SignIn}/>
                 </Router>
             }
         </div>

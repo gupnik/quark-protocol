@@ -36,7 +36,7 @@ function App() {
         <Topbar />
         <Switch>
           <PublicRoute  component={Courses} path="/courses" exact />
-          <PublicRoute  component={Login} path="/login" exact />
+          <PublicRoute  component={Login} path="/login" />
           <PublicRoute  component={CourseDetails} path="/course/:slug" exact />
           <PublicRoute  component={Forum} path="/forum" exact />
           <PrivateRoute  component={Dashboard} path="/dashboard" exact />
