@@ -1,3 +1,8 @@
+Quark Protocol
+===============
+
+Decentralized EdTech Platform benefitting creators and learners
+
 near-blank-project
 ==================
 
