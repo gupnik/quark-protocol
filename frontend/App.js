@@ -20,6 +20,7 @@ import PublicRoute from "./components/routing/PublicRoute"
 //pages 
 import Courses from "./pages/Courses";
 import CourseDetails from "./pages/CourseDetails";
+import Forum from "./pages/Forum";
 import Login from "./pages/Login";
 import Dashboard from './pages/Dashboard';
 import Settings from './pages/Settings/Settings';
@@ -37,6 +38,7 @@ function App() {
           <PublicRoute  component={Courses} path="/courses" exact />
           <PublicRoute  component={Login} path="/login" exact />
           <PublicRoute  component={CourseDetails} path="/course/:slug" exact />
+          <PublicRoute  component={Forum} path="/forum" exact />
           <PrivateRoute  component={Dashboard} path="/dashboard" exact />
           <PrivateRoute  component={Settings} path="/settings" exact />
           <PrivateRoute  component={SettingsEdit} path="/settings/edit" exact />

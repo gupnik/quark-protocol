@@ -39,6 +39,9 @@ function Topbar({user}) {
                             <li>
                               <Link to="/courses">Courses</Link>
                             </li>
+                            <li>
+                              <Link to="/forum">Forum</Link>
+                            </li>
                           </ul>
                         </nav>
                     </div>
